@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -16,15 +19,18 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.climber.MoveClimber;
 import frc.robot.commands.elevator.MoveElevatorToPosition;
-import frc.robot.commands.intake.MoveWristToPosition;
 import frc.robot.commands.intake.MoveWrist;
+import frc.robot.commands.intake.MoveWristToPosition;
 import frc.robot.commands.intake.algaeIntake;
 import frc.robot.commands.intake.coralIntake;
+import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
+import frc.robot.subsystems.swervedrive.ClimberSubsystem;
+import frc.robot.subsystems.swervedrive.CoralIntakeSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
-import frc.robot.subsystems.swervedrive.IntakeSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import java.io.File;
+import frc.robot.subsystems.swervedrive.WristSubsystem;
 import swervelib.SwerveInputStream;
 
 /**
@@ -40,11 +46,14 @@ public class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
     final CommandXboxController driverXbox = new CommandXboxController(0);
     // The robot's subsystems and commands are defined here...
-    private final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+    public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/neo"));
 
     private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-    private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+    private final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+    private final CoralIntakeSubsystem coralSubsystem = new CoralIntakeSubsystem();
+    private final WristSubsystem wristSubsystem = new WristSubsystem();
+    private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
     /**
      * Converts driver input into a field-relative ChassisSpeeds that is controlled
@@ -148,44 +157,76 @@ public class RobotContainer {
             driverXbox.back().whileTrue(drivebase.centerModulesCommand());
             // driverXbox.leftBumper().onTrue(Commands.none());
             // driverXbox.rightBumper().onTrue(Commands.none());
-        } else {
-            // L1
+        } else { // configure controls for teleop
+            /*
+            Notes for controls:
+
+            .onTrue() will run a command the button is initially pressed
+            .onFalse() will run a command when the button is released
+            
+            .whileTrue() will run a command when the button is pressed and cancel it when the button is released
+            .whileFalse() will run a command when the button is released and cancel it when the button is pressed
+
+            a ParallelCommandGroup will run multiple commands at the same time until the last command in the list finishes
+
+            general control format: driverXbox.<button name>().<when it should run>(command);
+            */
+
+            // Level 1 coral (the bin thing at the bottom of the reef)
             driverXbox.povDown().onTrue(new ParallelCommandGroup(
                     new MoveElevatorToPosition(elevatorSubsystem, 0),
-                    new MoveWristToPosition(intakeSubsystem, .677)));
+                    new MoveWristToPosition(wristSubsystem, .677)));
             // driverXbox.povDown().onFalse());
 
-            // L2
+            // Level 2 coral (lowest arm on the reef)
             driverXbox.povLeft().onTrue(new ParallelCommandGroup(
                     new MoveElevatorToPosition(elevatorSubsystem, 11.286),
-                    new MoveWristToPosition(intakeSubsystem, .66)));
+                    new MoveWristToPosition(wristSubsystem, .66)));
 
-            // L3
+            // Level 3 coral (middle arm on the reef)
             driverXbox.povUp().onTrue(new ParallelCommandGroup(
                     new MoveElevatorToPosition(elevatorSubsystem, 32),
-                    new MoveWristToPosition(intakeSubsystem, .66)));
+                    new MoveWristToPosition(wristSubsystem, .66)));
 
-            // L4
+            // Level 4 coral (top arm on the reef)
             driverXbox.povRight().onTrue(new ParallelCommandGroup(
                     new MoveElevatorToPosition(elevatorSubsystem, 70.5),
-                    new MoveWristToPosition(intakeSubsystem, .691)));
+                    new MoveWristToPosition(wristSubsystem, .691)));
 
-            driverXbox.leftBumper().whileTrue(new coralIntake(intakeSubsystem, .35));
-            driverXbox.rightBumper().whileTrue(new coralIntake(intakeSubsystem, -.35));
+            // move coral intake. right bumper is intake, left bumper is outtake
+            driverXbox.leftBumper().whileTrue(new coralIntake(coralSubsystem, .35));
+            driverXbox.rightBumper().whileTrue(new coralIntake(coralSubsystem, -.35));
 
-            driverXbox.a().whileTrue(new algaeIntake(intakeSubsystem, -0.4));
-            driverXbox.y().whileTrue(new algaeIntake(intakeSubsystem, 0.4));
+            // move algae intake
+            driverXbox.a().whileTrue(new algaeIntake(algaeSubsystem, -0.4));
+            driverXbox.y().whileTrue(new algaeIntake(algaeSubsystem, 0.4));
             // drivebase.driveToPose(
             // new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
             // );
-            driverXbox.start().whileTrue(Commands.none());
-            driverXbox.back().whileTrue(Commands.none());
+            // driverXbox.start().whileTrue(Commands.none());
+            // driverXbox.back().whileTrue(Commands.none());
             // driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock,
             // drivebase).repeatedly());
             // driverXbox.rightBumper().onTrue(Commands.none());
-            driverXbox.leftTrigger().whileTrue(new MoveWrist(intakeSubsystem, -.2));
-            driverXbox.rightTrigger().whileTrue(new MoveWrist(intakeSubsystem, .2));
 
+            // move wrist at speed
+            driverXbox.leftTrigger(0.2)
+                    .whileTrue(new MoveWrist(wristSubsystem, -driverXbox.getLeftTriggerAxis()));
+            driverXbox.rightTrigger(0.2)
+                    .whileTrue(new MoveWrist(wristSubsystem, driverXbox.getRightTriggerAxis()));
+
+            // move climber at speed. this will need to be changed to MoveClimberToPosition at some point
+            driverXbox.x().whileTrue(new MoveClimber(climberSubsystem, 0.4));
+            driverXbox.b().whileTrue(new MoveClimber(climberSubsystem, -0.4));
+            
+            // Reset the elevator, wrist and gyro
+            driverXbox.start().onTrue(new ParallelCommandGroup(
+                new MoveElevatorToPosition(elevatorSubsystem, 0),
+                new MoveWristToPosition(wristSubsystem, .500),
+                new algaeIntake(algaeSubsystem, 0),
+                new coralIntake(coralSubsystem, 0),
+                (Commands.runOnce(drivebase::zeroGyro))
+            ));
         }
 
     }

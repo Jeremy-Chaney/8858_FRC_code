@@ -9,23 +9,23 @@ public class MoveElevatorToPosition extends Command {
 
     public MoveElevatorToPosition(ElevatorSubsystem elevatorSubsystem, double targetPosition) {
         this.elevatorSubsystem = elevatorSubsystem;
-        this.targetPosition = targetPosition;
-        addRequirements(elevatorSubsystem);
+        this.targetPosition = targetPosition; // set target position
+        addRequirements(elevatorSubsystem); // add requirement so that multiple commands using the same subsystem don't run at the same time
     }
 
     @Override
     public void initialize(){
-        elevatorSubsystem.resetPID();
+        elevatorSubsystem.resetPID(); // reset PID controller
     }
 
     @Override
     public void execute(){
-        elevatorSubsystem.MoveElevatorToPosition(targetPosition);
+        elevatorSubsystem.MoveElevatorToPosition(targetPosition); // move elevator to target position
     }
 
     @Override
     public boolean isFinished(){
-        return false;
+        return false; // never finish
     }
 
     @Override
