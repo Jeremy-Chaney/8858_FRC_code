@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+
+// import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+// import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -12,9 +18,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.WristSubsystem;
+import swervelib.SwerveInputStream;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -62,6 +72,8 @@ public class Robot extends TimedRobot {
         if (isSimulation()) {
             DriverStation.silenceJoystickConnectionWarning(true);
         }
+        // UsbCamera camera = CameraServer.startAutomaticCapture();
+        // camera.setResolution(160, 120);
     }
 
     /**
@@ -114,8 +126,21 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         m_robotContainer.setMotorBrake(true);
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-        m_robotContainer.drivebase.zeroGyro();
+        // m_autonomousCommand = m_robotContainer.drivebase
+        //         .driveFieldOriented(SwerveInputStream.of(m_robotContainer.drivebase.getSwerveDrive(),
+        //                 () -> -0.4,
+        //                 () -> 0));
+        // m_robotContainer.drivebase.zeroGyro();
+        m_autonomousCommand = new SequentialCommandGroup(
+
+            // Drive forward to reef from middle
+            new ParallelCommandGroup(
+                m_robotContainer.drivebase.getAutonomousCommand("Step 1 Auto")
+            )
+            // new ParallelCommandGroup(
+            //     m_robotContainer.drivebase.getAutonomousCommand("Step 1 Auto")
+            // )
+        );
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();

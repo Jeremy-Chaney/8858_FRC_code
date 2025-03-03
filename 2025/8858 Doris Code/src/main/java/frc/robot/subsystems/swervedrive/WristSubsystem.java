@@ -32,16 +32,19 @@ public class WristSubsystem extends SubsystemBase {
         wrist_PID = new PIDController(kP, kI, kD);
         wrist_instance = this; // save subsystem so it can be accessed anywhere
         // verify this works before uncommenting
-        // setDefaultCommand(new Command() { // run this command when the subsystem isn't being used by another command
-        //     @Override
-        //     public void initialize() {
-        //         wrist_instance.resetPID(); // reset the PID controller
-        //     }
-        //     @Override
-        //     public void execute() {
-        //         wrist_instance.holdPosition(); // hold the wrist at the last set position
-        //     }
-        // });
+        setDefaultCommand(new Command() { // run this command when the subsystem isn't being used by another command
+            {
+                addRequirements(wrist_instance);
+            }
+            @Override
+            public void initialize() {
+                wrist_instance.resetPID(); // reset the PID controller
+            }
+            @Override
+            public void execute() {
+                wrist_instance.MoveWristToPosition(0.5); // hold the wrist at the last set position
+            }
+        });
     }
 
     /** move wrist to a position */

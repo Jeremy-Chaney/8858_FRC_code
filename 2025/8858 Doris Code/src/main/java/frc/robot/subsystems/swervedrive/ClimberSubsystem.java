@@ -20,7 +20,7 @@ public class ClimberSubsystem extends SubsystemBase {
     private final PIDController pidController;
 
     // PID Coefficients
-    private final double kP = 0.1;
+    private final double kP = 0.5;
     private final double kI = 0.0;
     private final double kD = 0.0;
     private final double kFF = 0.0;
@@ -36,18 +36,32 @@ public class ClimberSubsystem extends SubsystemBase {
         throughBore = new DutyCycleEncoder(0);
         pidController = new PIDController(kP, kI, kD);
         m_instance = this; // save subsystem so it can be accessed anywhere
+
+        leftClimbMotor.set(0); // left motor runs slightly faster for some reason, so make it slower
+        rightClimbMotor.set(0);
+
     }
 
     /** Move the climber to a certain position */
     public void MoveClimberToPosition(double targetPosition, double speed){ // move the elevator to a certain position
         this.lastTargetPosition = targetPosition; // save the target position
         double currentPosition = throughBore.get();
-        double output = pidController.calculate(currentPosition, targetPosition);
+        // double output = pidController.calculate(currentPosition, targetPosition);
 
-        output = Math.max(-speed, Math.min(speed, output));
+        double output;
+        if (currentPosition > targetPosition){
+            output = -Math.abs(speed);
+        } else {
+            output = Math.abs(speed);
+        }
 
-        leftClimbMotor.set(output * 0.97); // left motor runs slightly faster for some reason, so make it slower
-        rightClimbMotor.set(-output);
+        if(Math.abs(currentPosition - targetPosition) < 0.005){
+            leftClimbMotor.set(0); // left motor runs slightly faster for some reason, so make it slower
+            rightClimbMotor.set(0);
+        } else {
+            leftClimbMotor.set(output * 0.97); // left motor runs slightly faster for some reason, so make it slower
+            rightClimbMotor.set(-output);
+        }
     }
 
     /** Reset the PID controller */

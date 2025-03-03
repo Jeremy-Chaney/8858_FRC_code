@@ -4,6 +4,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -27,15 +28,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final double kI = 0.0;
     private final double kD = 0.0;
     private final double kFF = 0.0;
-    private final double kMaxOutput = 0.3;
-    private final double kMinOutput = -0.3;
+    private final double kMaxOutput = 0.6;
+    private final double kMinOutput = -0.45;
 
     // pre-defined positions for the elevator
-    public double l1_pos = 0.0;
-    public double l2_pos = 0.0;
-    public double l3_pos = 0.0;
-    public double l4_pos = 0.0;
-    public double elevator_top = 68.0;
     private double lastTargetPosition = 0.0;
 
     // left is increasing as elevator raises
@@ -53,16 +49,19 @@ public class ElevatorSubsystem extends SubsystemBase {
         pidController = new PIDController(kP, kI, kD);
         elevatorinstance = this; // save subsystem so it can be accessed anywhere
         // verify this works before uncommenting
-        // setDefaultCommand(new Command() { // run this command when the subsystem isn't being used by another command
-        //     @Override
-        //     public void initialize() {
-        //         elevatorinstance.resetPID(); // reset the PID controller
-        //     }
-        //     @Override
-        //     public void execute() {
-        //         elevatorinstance.HoldPosition(); // hold the elevator at the last set position
-        //     }
-        // });
+        setDefaultCommand(new Command() { // run this command when the subsystem isn't being used by another command
+            {
+                addRequirements(elevatorinstance);
+            }
+            @Override
+            public void initialize() {
+                elevatorinstance.resetPID(); // reset the PID controller
+            }
+            @Override
+            public void execute() {
+                elevatorinstance.HoldPosition(); // hold the elevator at the last set position
+            }
+        });
     }
 
     /** Move the elevator to a certain position */

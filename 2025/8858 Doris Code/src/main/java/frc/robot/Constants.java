@@ -23,6 +23,28 @@ public final class Constants
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
   public static final double MAX_SPEED  = Units.feetToMeters(14.5);
+
+  //Positions for coral elevator height for levels 1-4
+  public static final double ELE_L1 =(0.0);
+  public static final double ELE_L2 =(11.286);
+  public static final double ELE_L3 =(32);
+  public static final double ELE_L4 =(70.5);
+
+  //Positions for coral wrist angle for levels 1-4
+  public static final double WR_L1 =(0.667);
+  public static final double WR_L2 =(0.66);
+  public static final double WR_L3 =(0.66);
+  public static final double WR_L4 =(0.691);
+
+  //Speed for Algae and Coral intake Motors
+  public static final double ALG_M_SPEED =(0.4);
+  public static final double COR_M_SPEED =(0.5);
+
+  //Positions for Wrist and elevator for coral intake
+  public static final double ELE_COR_IN =(10.0);
+  public static final double WR_COR_IN =(0.6);
+
+
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 //  public static final class AutonConstants
