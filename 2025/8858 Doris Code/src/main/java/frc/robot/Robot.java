@@ -126,20 +126,12 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         m_robotContainer.setMotorBrake(true);
-        // m_autonomousCommand = m_robotContainer.drivebase
-        //         .driveFieldOriented(SwerveInputStream.of(m_robotContainer.drivebase.getSwerveDrive(),
-        //                 () -> -0.4,
-        //                 () -> 0));
-        // m_robotContainer.drivebase.zeroGyro();
         m_autonomousCommand = new SequentialCommandGroup(
 
             // Drive forward to reef from middle
             new ParallelCommandGroup(
                 m_robotContainer.drivebase.getAutonomousCommand("Step 1 Auto")
             )
-            // new ParallelCommandGroup(
-            //     m_robotContainer.drivebase.getAutonomousCommand("Step 1 Auto")
-            // )
         );
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
@@ -172,32 +164,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        // if (controller.getYButton() == true){
-        // ClimberSubsystem.leftClimbMotor.set(0.1);
-        // ClimberSubsystem.rightClimbMotor.set(0.1);
-        // }
-        // else if (controller.getAButton() == true){
-        // ClimberSubsystem.leftClimbMotor.set(-0.1);
-        // ClimberSubsystem.rightClimbMotor.set(-0.1);
-        // }
-        // else{
-        // ClimberSubsystem.leftClimbMotor.set(0);
-        // ClimberSubsystem.rightClimbMotor.set(0);
-        // }
-
-        // if (controller.getLeftBumperButton() == true) {
-        // ElevatorSubsystem.leftElevatorMotor.set(-0.1);
-        // ElevatorSubsystem.rightElevatorMotor.set(0.1);
-        // } else if (controller.getRightBumperButton() == true) {
-        // ElevatorSubsystem.leftElevatorMotor.set(0.1);
-        // ElevatorSubsystem.rightElevatorMotor.set(-0.1);
-        // } else {
-        // ElevatorSubsystem.leftElevatorMotor.set(0);
-        // ElevatorSubsystem.rightElevatorMotor.set(0);
-        // }
-
-        // SmartDashboard.putNumber("Elevator (left)",
-        // m_robotContainer.elevatorSubsystem.getEncoderPosition());
     }
 
     @Override

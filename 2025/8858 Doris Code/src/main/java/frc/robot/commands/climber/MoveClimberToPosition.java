@@ -1,6 +1,7 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 
 public class MoveClimberToPosition extends Command {
@@ -32,6 +33,6 @@ public class MoveClimberToPosition extends Command {
 
     @Override
     public void end(boolean interrupted) { // runs when the command ends
-        climberSubsystem.MoveClimberToPosition(climberSubsystem.getEncoder(), 0.4);
+        climberSubsystem.MoveClimberToPosition(climberSubsystem.getEncoder(), Constants.CL_M_SPEED);
     }
 }

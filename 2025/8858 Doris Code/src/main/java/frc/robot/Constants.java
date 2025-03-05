@@ -27,7 +27,7 @@ public final class Constants
   //Positions for coral elevator height for levels 1-4
   public static final double ELE_L1 =(0.0);
   public static final double ELE_L2 =(11.286);
-  public static final double ELE_L3 =(32);
+  public static final double ELE_L3 =(32.0);
   public static final double ELE_L4 =(70.5);
 
   //Positions for coral wrist angle for levels 1-4
@@ -39,10 +39,14 @@ public final class Constants
   //Speed for Algae and Coral intake Motors
   public static final double ALG_M_SPEED =(0.4);
   public static final double COR_M_SPEED =(0.5);
+  public static final double ALG_M_MIN_SPEED = (-0.5);
 
   //Positions for Wrist and elevator for coral intake
   public static final double ELE_COR_IN =(10.0);
   public static final double WR_COR_IN =(0.6);
+
+  //Climber speed stuff
+  public static final double CL_M_SPEED = (0.4);
 
 
   // Maximum speed of the robot in meters per second, used to limit acceleration.

@@ -1,6 +1,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
 
 public class algaeIntake extends Command {
@@ -30,7 +31,7 @@ public class algaeIntake extends Command {
     @Override
     public void end(boolean interrupted) { // runs when the command ends
         if (speed < 0) {
-            algaeSubsystem.algaeIntake(-0.05);
+            algaeSubsystem.algaeIntake(Constants.ALG_M_MIN_SPEED);
         } else {
             algaeSubsystem.algaeIntake(0);
         }
