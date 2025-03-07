@@ -12,7 +12,7 @@ Team 8858 uses this [Barcode/QR code Scanner](https://www.amazon.com/dp/B0855MQ9
 
 - To switch Barcode Reader to USB Dongle, scan this:
 
-    ![Barcode to put Barcode Reader into Bluetooth Pairing Mode](config_barcodes/usb_dongle.png)
+    ![Barcode to switch Barcode Reader over to USB Dongle](config_barcodes/usb_dongle.png)
 
 - To Display FW Versions, scan this:
 
@@ -32,10 +32,10 @@ Team 8858 uses this [Barcode/QR code Scanner](https://www.amazon.com/dp/B0855MQ9
 ### Bluetooth Transmit Speed:
   - High Speed
 
-    ![alt text](config_barcodes/high_speed.png)
+    ![Change BT xmit to high-speed](config_barcodes/high_speed.png)
   - Medium Speed
 
-    ![alt text](config_barcodes/med_speed.png)
+    ![Change BT xmit to medium-speed](config_barcodes/med_speed.png)
   - Low Speed
 
-    ![alt text](config_barcodes/low_speed.png)
+    ![Change BT xmit to low-speed](config_barcodes/low_speed.png)
