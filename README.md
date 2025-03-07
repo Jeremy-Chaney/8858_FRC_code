@@ -1,4 +1,4 @@
-# Team 8858's Code Repository
+# [![Raider Robotics & Engineering Logo](images/logos/rr&e.png)](https://www.thebluealliance.com/team/8858) Team 8858's Code Repository
 
 This is the codebase for [Team 8858 'Beast from the East'](https://www.thebluealliance.com/team/8858) and its tools.
 
@@ -7,4 +7,5 @@ In this Repository, we keep a record the code on each year's [FRC](https://www.f
 
 We also keep general scripts that can be used for analysis by parsing [The Blue Alliance's](https://www.thebluealliance.com) database and some of our [scouting tools](Scouting/).
 
-[![Logo of Team 8858 'Beast from the East'](images/8858_logo.png)](https://www.thebluealliance.com/team/8858)
+#
+[![Logo of Team 8858 'Beast from the East'](images/logos/8858_logo.png)](https://www.thebluealliance.com/team/8858)
