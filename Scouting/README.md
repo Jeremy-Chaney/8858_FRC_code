@@ -16,7 +16,7 @@ Team 8858 uses this [Barcode/QR code Scanner](https://www.amazon.com/dp/B0855MQ9
 
 - To Display FW Versions, scan this:
 
-    ![Barcode to display Barcode Reader's FW version](config_barcodes/disp_fw_ver.png)
+    ![Barcode to display Barcode Reader's Firware version](config_barcodes/disp_fw_ver.png)
 
 ### Volume Modes:
   - high volume:
