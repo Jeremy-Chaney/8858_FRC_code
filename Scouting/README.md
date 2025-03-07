@@ -8,34 +8,36 @@ Team 8858 uses this [Barcode/QR code Scanner](https://www.amazon.com/dp/B0855MQ9
 
 - To put Barcode reader into Bluetooth Pairing mode, scan this:
 
-    ![Barcode to put Barcode Reader into Bluetooth Pairing Mode](config_barcodes/bluetooth_pairing.png)
+    ![Barcode to put Barcode Reader into Bluetooth Pairing Mode](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/bluetooth_pairing.png)
 
 - To switch Barcode Reader to USB Dongle, scan this:
 
-    ![Barcode to switch Barcode Reader over to USB Dongle](config_barcodes/usb_dongle.png)
+    ![Barcode to switch Barcode Reader over to USB Dongle](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/usb_dongle.png)
 
 - To Display FW Versions, scan this:
 
-    ![Barcode to display Barcode Reader's Firware version](config_barcodes/disp_fw_ver.png)
+    ![Barcode to display Barcode Reader's Firware version](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/disp_fw_ver.png)
 
 ### Volume Modes:
   - high volume:
 
-    ![Barcode to put set reader's volume to 'high'](config_barcodes/high_volume.png)
+    ![Barcode to put set reader's volume to 'high'](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/high_volume.png)
   - low volume
 
-    ![Barcode to put set reader's volume to 'low'](config_barcodes/low_volume.png)
+    ![Barcode to put set reader's volume to 'low'](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/low_volume.png)
   - mute
 
-    ![Barcode to put set reader's volume to 'mute'](config_barcodes/mute.png)
+    ![Barcode to put set reader's volume to 'mute'](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/mute.png)
 
 ### Bluetooth Transmit Speed:
   - High Speed
 
-    ![Change BT xmit to high-speed](config_barcodes/high_speed.png)
+    ![Change BT xmit to high-speed](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/high_speed.png)
   - Medium Speed
 
-    ![Change BT xmit to medium-speed](config_barcodes/med_speed.png)
+    ![Change BT xmit to medium-speed](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/med_speed.png)
   - Low Speed
 
-    ![Change BT xmit to low-speed](config_barcodes/low_speed.png)
+    ![Change BT xmit to low-speed](https://github.com/Jeremy-Chaney/8858_FRC_code/images/config_barcodes/low_speed.png)
+
+[![Logo of Team 8858 'Beast from the East'](https://github.com/Jeremy-Chaney/8858_FRC_code/images/8858_logo.png)](https://www.thebluealliance.com/team/8858)

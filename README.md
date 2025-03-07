@@ -6,3 +6,5 @@ In this Repository, we keep a record the code on each year's [FRC](https://www.f
 - Under Each year will be Projects that were either the year's final code or snapshots from major milestones
 
 We also keep general scripts that can be used for analysis by parsing [The Blue Alliance's](https://www.thebluealliance.com) database and some of our [scouting tools](Scouting/).
+
+[![Logo of Team 8858 'Beast from the East'](images/8858_logo.png)](https://www.thebluealliance.com/team/8858)
