@@ -19,13 +19,16 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.camera.SwitchCamera;
 import frc.robot.commands.climber.MoveClimberToPosition;
+import frc.robot.commands.elevator.MoveElevator;
 import frc.robot.commands.elevator.MoveElevatorToPosition;
 import frc.robot.commands.intake.MoveWrist;
 import frc.robot.commands.intake.MoveWristToPosition;
 import frc.robot.commands.intake.algaeIntake;
 import frc.robot.commands.intake.coralIntake;
 import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
+import frc.robot.subsystems.swervedrive.CameraSubsystem;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.CoralIntakeSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
@@ -54,6 +57,7 @@ public class RobotContainer {
     private final CoralIntakeSubsystem coralSubsystem = new CoralIntakeSubsystem();
     private final WristSubsystem wristSubsystem = new WristSubsystem();
     private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+    private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
     private int preset = 0;
 
     /**
@@ -185,6 +189,8 @@ public class RobotContainer {
                     new MoveElevatorToPosition(elevatorSubsystem,Constants.ELE_L1),
                     new MoveWristToPosition(wristSubsystem, Constants.WR_L1)));
             // driverXbox.povDown().onFalse());
+            // driverXbox.povDown().whileTrue(new MoveElevator(elevatorSubsystem, 0.1));
+            // driverXbox.povUp().whileTrue(new MoveElevator(elevatorSubsystem, -0.1));
 
             // Level 2 coral (lowest arm on the reef)
             driverXbox.povLeft().onTrue(new ParallelCommandGroup(
@@ -209,9 +215,10 @@ public class RobotContainer {
             //         new MoveWristToPosition(wristSubsystem, .5)));
 
             // high algae
-            driverXbox.back().onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPosition(elevatorSubsystem, 45.833),
-                    new MoveWristToPosition(wristSubsystem, .5)));
+            // driverXbox.back().onTrue(new ParallelCommandGroup(
+            //         new MoveElevatorToPosition(elevatorSubsystem, 45.833),
+            //         new MoveWristToPosition(wristSubsystem, .5)));
+            driverXbox.back().onTrue(new SwitchCamera(cameraSubsystem));
 
             // Level 4 coral (top arm on the reef)
             driverXbox.povRight().onTrue(new ParallelCommandGroup(
@@ -284,7 +291,7 @@ public class RobotContainer {
             driverXbox.start().onTrue(new ParallelCommandGroup(
                 // new MoveElevatorToPositionList(elevatorSubsystem, -100),
                 // new MoveWristToPositionList(wristSubsystem, -100),
-                (Commands.runOnce(drivebase::zeroGyro))
+                (Commands.runOnce(drivebase::zeroGyroWithAlliance))
             ));
         }
 

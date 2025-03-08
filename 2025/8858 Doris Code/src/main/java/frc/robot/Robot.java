@@ -6,15 +6,19 @@ package frc.robot;
 
 import org.opencv.core.Mat;
 
+import edu.wpi.first.cameraserver.CameraServer;
 // import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSink;
 // import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -25,6 +29,7 @@ import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.WristSubsystem;
 import swervelib.SwerveInputStream;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,6 +42,7 @@ public class Robot extends TimedRobot {
 
     private static Robot instance;
     private Command m_autonomousCommand;
+    private AnalogInput tC0;
 
     private RobotContainer m_robotContainer;
     // private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -64,6 +70,10 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
 
+        // Thermocouples
+        tC0 = new AnalogInput(0);
+
+
         // Create a timer to disable motor brake a few seconds after disable. This will
         // let the robot stop
         // immediately when disabled, but then also let it be pushed more
@@ -72,8 +82,6 @@ public class Robot extends TimedRobot {
         if (isSimulation()) {
             DriverStation.silenceJoystickConnectionWarning(true);
         }
-        // UsbCamera camera = CameraServer.startAutomaticCapture();
-        // camera.setResolution(160, 120);
     }
 
     /**
@@ -99,6 +107,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("z_Wrist", WristSubsystem.wrist_instance.getEncoderPosition());
         SmartDashboard.putNumber("z_Elevator height", ElevatorSubsystem.elevatorinstance.getEncoderPosition());
         SmartDashboard.putNumber("z_Climber Encoder", ClimberSubsystem.m_instance.getEncoder());
+        // SmartDashboard.putNumber("z_Thermocouple 0 (K)", (tC0.getVoltage() * 200) + 23.15);
+        // SmartDashboard.putNumber("z_Thermocouple 0 (C)", (tC0.getVoltage() * 200) - 250);
+        SmartDashboard.putNumber("z_Thermocouple 0 (F)", (((tC0.getVoltage() * 200) - 250) * 1.8) + 32);
     }
 
     /**

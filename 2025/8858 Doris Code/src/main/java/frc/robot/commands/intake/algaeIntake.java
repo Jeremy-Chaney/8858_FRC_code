@@ -30,10 +30,6 @@ public class algaeIntake extends Command {
 
     @Override
     public void end(boolean interrupted) { // runs when the command ends
-        if (speed < 0) {
-            algaeSubsystem.algaeIntake(Constants.ALG_M_MIN_SPEED);
-        } else {
-            algaeSubsystem.algaeIntake(0);
-        }
+        algaeSubsystem.algaeIntake(0);
     }
 }

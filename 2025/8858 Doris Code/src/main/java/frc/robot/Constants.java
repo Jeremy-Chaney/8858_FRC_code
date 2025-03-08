@@ -39,7 +39,7 @@ public final class Constants
   //Speed for Algae and Coral intake Motors
   public static final double ALG_M_SPEED =(0.4);
   public static final double COR_M_SPEED =(0.5);
-  public static final double ALG_M_MIN_SPEED = (-0.5);
+//   public static final double ALG_M_MIN_SPEED = (-0.5);
 
   //Positions for Wrist and elevator for coral intake
   public static final double ELE_COR_IN =(10.0);
@@ -73,5 +73,29 @@ public final class Constants
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
+
+    //CAN IDs
+    public static final int FL_ANG = 1;
+    public static final int FL_DR = 2;
+    public static final int FR_ANG = 3;
+    public static final int FR_DR = 4;
+    public static final int BL_DR = 5;
+    public static final int BL_ANG = 6;
+    public static final int BR_DR = 7;
+    public static final int BR_ANG = 8;
+    public static final int LC_MOTOR = 9;
+    public static final int RC_MOTOR = 10;
+    public static final int BL_CANCODER = 11;
+    public static final int BR_CANCODER = 12;
+    public static final int FR_CANCODER = 13;
+    public static final int FL_CANCODER = 14;
+    public static final int ELE_R = 15;
+    public static final int ELE_L = 16;
+    public static final int ALG_L = 18;
+    public static final int ALG_R = 19;
+    public static final int COR_MOTOR = 21;
+    public static final int WRIST_MOTOR = 22;
+    public static final int ELE_MOTOR = 23;
+
   }
 }
