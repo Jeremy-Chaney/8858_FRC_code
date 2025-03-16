@@ -4,32 +4,22 @@
 
 package frc.robot;
 
-import org.opencv.core.Mat;
+import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.cameraserver.CameraServer;
-// import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.wpilibj.AnalogInput;
 // import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
+import frc.robot.subsystems.swervedrive.CoralIntakeSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
-import frc.robot.subsystems.swervedrive.WristSubsystem;
-import swervelib.SwerveInputStream;
-import edu.wpi.first.wpilibj.AnalogInput;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -42,7 +32,11 @@ public class Robot extends TimedRobot {
 
     private static Robot instance;
     private Command m_autonomousCommand;
-    private AnalogInput tC0;
+    private AnalogInput tc_fl;
+    private AnalogInput tC_fr;
+    private AnalogInput tc_bl;
+    private AnalogInput tC_br;
+
 
     private RobotContainer m_robotContainer;
     // private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -71,7 +65,10 @@ public class Robot extends TimedRobot {
         m_robotContainer = new RobotContainer();
 
         // Thermocouples
-        tC0 = new AnalogInput(0);
+        tc_fl = new AnalogInput(Constants.OperatorConstants.TC_FL);
+        tC_fr = new AnalogInput(Constants.OperatorConstants.TC_FR);
+        tc_bl = new AnalogInput(Constants.OperatorConstants.TC_BL);
+        tC_br = new AnalogInput(Constants.OperatorConstants.TC_BR);
 
 
         // Create a timer to disable motor brake a few seconds after disable. This will
@@ -104,12 +101,18 @@ public class Robot extends TimedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        SmartDashboard.putNumber("z_Wrist", WristSubsystem.wrist_instance.getEncoderPosition());
         SmartDashboard.putNumber("z_Elevator height", ElevatorSubsystem.elevatorinstance.getEncoderPosition());
         SmartDashboard.putNumber("z_Climber Encoder", ClimberSubsystem.m_instance.getEncoder());
-        // SmartDashboard.putNumber("z_Thermocouple 0 (K)", (tC0.getVoltage() * 200) + 23.15);
-        // SmartDashboard.putNumber("z_Thermocouple 0 (C)", (tC0.getVoltage() * 200) - 250);
-        SmartDashboard.putNumber("z_Thermocouple 0 (F)", (((tC0.getVoltage() * 200) - 250) * 1.8) + 32);
+        SmartDashboard.putBoolean("z_Limit Switch Top", CoralIntakeSubsystem.coral_intake_instance.getTop());
+        SmartDashboard.putBoolean("z_Limit Switch Bottom", CoralIntakeSubsystem.coral_intake_instance.getBot());
+        // SmartDashboard.putNumber("z_Thermocouple 0 (K)", (tc_fl.getVoltage() * 200) + 23.15);
+        // SmartDashboard.putNumber("z_Thermocouple 0 (C)", (tc_fl.getVoltage() * 200) - 250);
+        SmartDashboard.putNumber("z_Thermocouple fl (F)", (((tc_fl.getVoltage() * 200) - 250) * 1.8) + 32);
+        SmartDashboard.putNumber("z_Thermocouple fr (F)", (((tC_fr.getVoltage() * 200) - 250) * 1.8) + 32);
+        SmartDashboard.putNumber("z_Thermocouple bl (F)", (((tc_bl.getVoltage() * 200) - 250) * 1.8) + 32);
+        SmartDashboard.putNumber("z_Thermocouple br (F)", (((tC_br.getVoltage() * 200) - 250) * 1.8) + 32);
+        SmartDashboard.putNumber("Robot X Position", (m_robotContainer.drivebase.getPose().getX()));
+        SmartDashboard.putNumber("Robot Y Position", (m_robotContainer.drivebase.getPose().getY()));
     }
 
     /**
@@ -138,6 +141,10 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         m_robotContainer.setMotorBrake(true);
         m_autonomousCommand = new SequentialCommandGroup(
+
+            // new ParallelCommandGroup(
+            //     NamedCommands.getCommand("L2")
+            // ),
 
             // Drive forward to reef from middle
             new ParallelCommandGroup(

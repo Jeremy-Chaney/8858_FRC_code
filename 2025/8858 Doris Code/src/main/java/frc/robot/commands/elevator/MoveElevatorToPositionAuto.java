@@ -1,6 +1,7 @@
 package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
 
 public class MoveElevatorToPositionAuto extends Command {
@@ -25,9 +26,12 @@ public class MoveElevatorToPositionAuto extends Command {
 
     @Override
     public boolean isFinished(){
-        return false; // never finish
+        if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL){
+            return true;
+        }else{
+            return false; // never finish
+        }
     }
-
     @Override
     public void end(boolean interrupted){
         elevatorSubsystem.MoveElevatorToPosition(elevatorSubsystem.getEncoderPosition());

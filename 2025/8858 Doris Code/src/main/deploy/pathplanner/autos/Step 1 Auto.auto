@@ -5,9 +5,59 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "CoralIntake"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Step 1 Auto"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L4"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "PrepCoral"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "L1"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Step 2 Auto"
+                }
+              }
+            ]
           }
         }
       ]

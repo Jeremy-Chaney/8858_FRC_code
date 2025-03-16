@@ -3,6 +3,7 @@ package frc.robot.subsystems.swervedrive;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import frc.robot.Constants.OperatorConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,7 +26,7 @@ public class WristSubsystem extends SubsystemBase {
 
     public WristSubsystem() {
         // initialize motor
-        wristMotor = new SparkMax(22, MotorType.kBrushless);
+        wristMotor = new SparkMax(OperatorConstants.CAN_WRIST_MOTOR, MotorType.kBrushless);
         // initialize throughbore encoder
         wristEncoder = wristMotor.getAbsoluteEncoder();
         // initialize PID controller

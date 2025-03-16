@@ -4,6 +4,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
+import frc.robot.Constants.OperatorConstants;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -20,11 +21,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     // public static RelativeEncoder rightElevatorEncoder = rightElevatorMotor.getEncoder();
 
     // private final SparkMax leftElevatorMotor;
-    // private final SparkMax rightElevatorMotor;
-    private final SparkFlex elevatorMotor;
+     private final SparkMax rightElevatorMotor;
+    // private final SparkFlex elevatorMotor;
     // private final RelativeEncoder leftElevatorEncoder;
-    // private final RelativeEncoder rightElevatorEncoder;
-    private final RelativeEncoder elevatorEncoder;
+    private final RelativeEncoder rightElevatorEncoder;
+    // private final RelativeEncoder elevatorEncoder;
     private final PIDController pidController;
 
     // PID Coefficients
@@ -45,12 +46,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem() {
         // initialize motors
         // leftElevatorMotor = new SparkMax(16, MotorType.kBrushless);
-        // rightElevatorMotor = new SparkMax(15, MotorType.kBrushless);
-        elevatorMotor = new SparkFlex(9, MotorType.kBrushless);
+        rightElevatorMotor = new SparkMax(OperatorConstants.CAN_ELE_R, MotorType.kBrushless);
+        // elevatorMotor = new SparkFlex(9, MotorType.kBrushless);
         // initialize encoders
         // leftElevatorEncoder = leftElevatorMotor.getEncoder();
-        // rightElevatorEncoder = rightElevatorMotor.getEncoder();
-        elevatorEncoder = elevatorMotor.getEncoder();
+        rightElevatorEncoder = rightElevatorMotor.getEncoder();
+        // elevatorEncoder = rightElevatorEncoder.getEncoder();
         // initialize PID controller
         pidController = new PIDController(kP, kI, kD);
         elevatorinstance = this; // save subsystem so it can be accessed anywhere
@@ -74,16 +75,18 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void MoveElevatorToPosition(double targetPosition){ // move the elevator to a certain position
         this.lastTargetPosition = targetPosition; // save the target position
         // double currentPosition = leftElevatorEncoder.getPosition();
-        double currentPosition = -elevatorEncoder.getPosition();
+        double currentPosition = -rightElevatorEncoder.getPosition();
         double output = pidController.calculate(currentPosition, targetPosition);
 
         output = Math.max(kMinOutput, Math.min(kMaxOutput, output));
 
         // leftElevatorMotor.set(output);
-        // rightElevatorMotor.set(-output);
-        elevatorMotor.set(-output);
+        rightElevatorMotor.set(-output);
+        // elevatorMotor.set(-output);
         SmartDashboard.putNumber("z_Elevator Power", -output);
     }
+
+
     /** Hold the elevator at the last target position */
     public void HoldPosition(){ // hold the elevator at the last target position
         this.MoveElevatorToPosition(lastTargetPosition);
@@ -91,14 +94,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     /** Move the elevator at a certain speed */
     public void MoveElevator(double speed){
         // leftElevatorMotor.set(speed); // run motors in opposite directions to move elevator up and down
-        // rightElevatorMotor.set(-speed);
-        elevatorMotor.set(-speed);
+        rightElevatorMotor.set(-speed);
+        // elevatorMotor.set(-speed);
         this.lastTargetPosition = this.getEncoderPosition(); // update the last target position so that the elevator doesn't go back to the last set position after the command ends
     }
     /** Get the height of the elevator */
     public double getEncoderPosition(){
         // return leftElevatorEncoder.getPosition();
-        return -elevatorEncoder.getPosition();
+        return -rightElevatorEncoder.getPosition();
     }
     /** Reset the PID controller */
     public void resetPID(){

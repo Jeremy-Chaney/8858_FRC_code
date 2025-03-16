@@ -4,7 +4,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants.OperatorConstants;
 public class AlgaeSubsystem extends SubsystemBase {
 
     private final SparkMax leftAlgaeIntakeMotor;
@@ -13,8 +13,8 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public AlgaeSubsystem() {
         // initialize motors
-        leftAlgaeIntakeMotor = new SparkMax(18, MotorType.kBrushless);
-        rightAlgaeIntakeMotor = new SparkMax(19, MotorType.kBrushless);
+        leftAlgaeIntakeMotor = new SparkMax(OperatorConstants.CAN_ALG_L, MotorType.kBrushless);
+        rightAlgaeIntakeMotor = new SparkMax(OperatorConstants.CAN_ALG_R, MotorType.kBrushless);
         algae_intake_instance = this; // save subsystem so it can be accessed anywhere
     }
 
