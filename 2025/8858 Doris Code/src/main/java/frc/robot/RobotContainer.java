@@ -265,13 +265,15 @@ public class RobotContainer {
 
             // low algae
             driverXbox.leftTrigger(0.5).onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGL)
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGL),
+                    new algaeSmartIntake(algaeSubsystem)
                 )
             );
 
             // high algae
             driverXbox.rightTrigger(0.5).onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGH)
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGH),
+                    new algaeSmartIntake(algaeSubsystem)
                 )
             );
 
@@ -357,9 +359,7 @@ public class RobotContainer {
                 })
             );
             controller_2.button(3).onFalse(
-                Commands.runOnce(()->{
-                    CoralIntakeSubsystem.coral_intake_instance.coralIntake(0);
-                })
+                new AutoCoralIntake(coralSubsystem)
             );
         }
 
