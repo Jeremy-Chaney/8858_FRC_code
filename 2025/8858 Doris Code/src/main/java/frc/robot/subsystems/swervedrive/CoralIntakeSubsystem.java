@@ -16,7 +16,7 @@ public class CoralIntakeSubsystem extends SubsystemBase {
 
     public CoralIntakeSubsystem() {
         // initialize motor
-        coralIntakeMotor = new SparkMax(OperatorConstants.CAN_COR_MOTOR, MotorType.kBrushless);
+        coralIntakeMotor = new SparkMax(OperatorConstants.CAN_CORAL_INTAKE_MOTOR, MotorType.kBrushless);
         coral_intake_instance = this; // save subsystem so it can be accessed anywhere
         lsTop = new DigitalInput(Constants.OperatorConstants.LS_TOP);
         lsBot = new DigitalInput(Constants.OperatorConstants.LS_BOT);

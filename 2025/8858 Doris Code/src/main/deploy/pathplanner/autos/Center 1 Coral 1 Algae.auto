@@ -17,28 +17,52 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "L4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "PrepCoral"
-                }
-              }
-            ]
+            "name": "L3"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ScoreCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ALGL"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Step 2 Auto to Algae"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ALGL"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ALGL_IN"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Step 3 Auto to Algae"
+                }
+              }
+            ]
           }
         },
         {
@@ -54,7 +78,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Step 2 Auto"
+                  "pathName": "Step 4 Auto Algae to Processor"
                 }
               }
             ]

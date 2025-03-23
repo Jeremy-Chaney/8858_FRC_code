@@ -4,6 +4,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
+
+import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 
 import edu.wpi.first.math.MathUtil;
@@ -30,14 +32,14 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // PID Coefficients
     private final double kP = 0.1;
-    private final double kI = 0.0;
-    private final double kD = 0.0;
+    private final double kI = 0.001;
+    private final double kD = 0.00001;
     private final double kFF = 0.0;
     private final double kMaxOutput = 0.6;
     private final double kMinOutput = -0.45;
 
     // pre-defined positions for the elevator
-    private double lastTargetPosition = 0.0;
+    public double lastTargetPosition = 0.0;
 
     // left is increasing as elevator raises
     // right is decreasing as elevator raises
@@ -46,7 +48,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public ElevatorSubsystem() {
         // initialize motors
         // leftElevatorMotor = new SparkMax(16, MotorType.kBrushless);
-        rightElevatorMotor = new SparkMax(OperatorConstants.CAN_ELE_R, MotorType.kBrushless);
+        rightElevatorMotor = new SparkMax(OperatorConstants.CAN_ELEVATOR_R, MotorType.kBrushless);
         // elevatorMotor = new SparkFlex(9, MotorType.kBrushless);
         // initialize encoders
         // leftElevatorEncoder = leftElevatorMotor.getEncoder();
@@ -77,13 +79,29 @@ public class ElevatorSubsystem extends SubsystemBase {
         // double currentPosition = leftElevatorEncoder.getPosition();
         double currentPosition = -rightElevatorEncoder.getPosition();
         double output = pidController.calculate(currentPosition, targetPosition);
+        // output = (currentPosition < targetPosition ? 0.2 : -0.2);
+        // if (Math.abs(currentPosition-targetPosition) < 1.0) {
+        //     output = 0;
+        // }
 
         output = Math.max(kMinOutput, Math.min(kMaxOutput, output));
 
+        if(output < 0 && currentPosition < 7){
+            output = output / 2.0;
+        }
+        if(output > 0 && currentPosition > 63){
+            output = output / 1.0;
+        }
         // leftElevatorMotor.set(output);
         rightElevatorMotor.set(-output);
         // elevatorMotor.set(-output);
-        SmartDashboard.putNumber("z_Elevator Power", -output);
+        SmartDashboard.putNumber("Elevator Power", -output);
+        SmartDashboard.putNumber("Elevator Target Position", lastTargetPosition);
+        SmartDashboard.putBoolean("Elevator Is At Position", isAtTarget());
+    }
+
+    public boolean isAtTarget() {
+        return Math.abs(getEncoderPosition() - lastTargetPosition) < Constants.ELE_TOL;
     }
 
 

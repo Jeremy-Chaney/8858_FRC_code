@@ -15,7 +15,7 @@ align the two sharpie marks then make sure the climber arms point straight up at
 */
 public class ClimberSubsystem extends SubsystemBase {
 
-    // private final SparkFlex leftClimbMotor;
+    private final SparkFlex leftClimbMotor;
     private final SparkFlex rightClimbMotor;
     private final DutyCycleEncoder throughBore;
     private final PIDController pidController;
@@ -32,13 +32,13 @@ public class ClimberSubsystem extends SubsystemBase {
     public static ClimberSubsystem m_instance;
 
     public ClimberSubsystem() {
-        // leftClimbMotor = new SparkFlex(9, MotorType.kBrushless);
-        rightClimbMotor = new SparkFlex(10, MotorType.kBrushless);
+        leftClimbMotor = new SparkFlex(Constants.OperatorConstants.CAN_LEFT_CLIMB_MOTOR, MotorType.kBrushless);
+        rightClimbMotor = new SparkFlex(Constants.OperatorConstants.CAN_RIGHT_CLIMB_MOTOR, MotorType.kBrushless);
         throughBore = new DutyCycleEncoder(0);
         pidController = new PIDController(kP, kI, kD);
         m_instance = this; // save subsystem so it can be accessed anywhere
 
-        // leftClimbMotor.set(0); // left motor runs slightly faster for some reason, so make it slower
+        leftClimbMotor.set(0); // left motor runs slightly faster for some reason, so make it slower
         rightClimbMotor.set(0);
 
     }
@@ -57,10 +57,10 @@ public class ClimberSubsystem extends SubsystemBase {
         }
 
         if(Math.abs(currentPosition - targetPosition) < 0.005){
-            // leftClimbMotor.set(0); // left motor runs slightly faster for some reason, so make it slower
+            leftClimbMotor.set(0); // left motor runs slightly faster for some reason, so make it slower
             rightClimbMotor.set(0);
         } else {
-            // leftClimbMotor.set(output * 0.97); // left motor runs slightly faster for some reason, so make it slower
+            leftClimbMotor.set(output * 0.97); // left motor runs slightly faster for some reason, so make it slower
             rightClimbMotor.set(-output);
         }
     }
@@ -82,7 +82,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
     /** move climber at speed */
     public void move(double speed) {
-        // leftClimbMotor.set(speed * .97); // left motor runs slightly faster for some reason, so make it slower
+        leftClimbMotor.set(speed * .97); // left motor runs slightly faster for some reason, so make it slower
         rightClimbMotor.set(-speed);
     }
 }

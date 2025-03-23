@@ -14,25 +14,25 @@ public class CameraSubsystem extends SubsystemBase{
 
     public CameraSubsystem(){
         // Cameras
-        camera_coral = CameraServer.startAutomaticCapture(Constants.OperatorConstants.CAM_COR);
+        camera_coral = CameraServer.startAutomaticCapture(Constants.OperatorConstants.CAM_CORAL);
         camera_coral.setResolution(160, 120);
         camera_coral.setFPS(Constants.OperatorConstants.CAM_FPS);
-        camera_climb = CameraServer.startAutomaticCapture(Constants.OperatorConstants.CAM_CLM);
+        camera_climb = CameraServer.startAutomaticCapture(Constants.OperatorConstants.CAM_CLIMB);
         camera_climb.setResolution(160, 120);
         camera_climb.setFPS(Constants.OperatorConstants.CAM_FPS);
         server = CameraServer.getServer();
         server.setSource(camera_coral);
-        camera_sel = Constants.OperatorConstants.CAM_CLM;
+        camera_sel = Constants.OperatorConstants.CAM_CLIMB;
     }
 
     public void SwitchCamera(int camera_select){
 
-        if(camera_select == Constants.OperatorConstants.CAM_COR){
+        if(camera_select == Constants.OperatorConstants.CAM_CORAL){
             // CORAL CAMERA
             server.setSource(camera_coral);
             camera_sel = camera_select;
 
-        } else if (camera_select == Constants.OperatorConstants.CAM_CLM) {
+        } else if (camera_select == Constants.OperatorConstants.CAM_CLIMB) {
             // CLIMB CAMERA
             server.setSource(camera_climb);
             camera_sel = camera_select;
@@ -40,7 +40,7 @@ public class CameraSubsystem extends SubsystemBase{
         } else {
             // DEFAULT CASE
             server.setSource(camera_climb);
-            camera_select = Constants.OperatorConstants.CAM_CLM;
+            camera_select = Constants.OperatorConstants.CAM_CLIMB;
         }
     }
 }

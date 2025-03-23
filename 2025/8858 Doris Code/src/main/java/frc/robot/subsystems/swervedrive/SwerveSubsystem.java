@@ -84,7 +84,7 @@ public class SwerveSubsystem extends SubsystemBase
   public SwerveSubsystem(File directory)
   {
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
-    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.LOW;
+    SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try
     {
       swerveDrive = new SwerveParser(directory).createSwerveDrive(Constants.MAX_SPEED,

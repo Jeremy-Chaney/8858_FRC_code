@@ -29,12 +29,12 @@ public final class Constants {
 
     // Positions for coral elevator height for levels 1-4
     public static final double ELE_L1 = (0.0);
-    public static final double ELE_L2 = (14.0);
-    public static final double ELE_L3 = (35.0);
-    public static final double ELE_L4 = (70.5);
-    public static final double ELE_ALGL = (29.0);
+    public static final double ELE_L2 = (15.024);
+    public static final double ELE_L3 = (36.142);
+    public static final double ELE_L4 = (69.15);
+    public static final double ELE_ALGL = (33.0);
     public static final double ELE_ALGH = (54.0);
-    public static final double ELE_TOL = (0.7);
+    public static final double ELE_TOL = (0.35);
 
     // Positions for coral wrist angle for levels 1-4
     public static final double WR_L1 = (0.667);
@@ -54,7 +54,7 @@ public final class Constants {
     public static final double WR_COR_IN = (0.6);
 
     // Climber speed stuff
-    public static final double CL_M_SPEED = (0.4);
+    public static final double CL_M_SPEED = (0.1);
 
     // Maximum speed of the robot in meters per second, used to limit acceleration.
 
@@ -81,31 +81,36 @@ public final class Constants {
         public static final double TURN_CONSTANT = 6;
 
         // CAN IDs
-        public static final int CAN_FL_ANG = 1;
-        public static final int CAN_FL_DR = 2;
-        public static final int CAN_FR_ANG = 3;
-        public static final int CAN_FR_DR = 4;
-        public static final int CAN_BL_DR = 5;
-        public static final int CAN_BL_ANG = 6;
-        public static final int CAN_BR_DR = 7;
-        public static final int CAN_BR_ANG = 8;
-        public static final int CAN_LC_MOTOR = 9;
-        public static final int CAN_RC_MOTOR = 10;
+        public static final int CAN_FL_ANGLE = 1;
+        public static final int CAN_FL_DRIVE = 2;
+        public static final int CAN_FR_ANGLE = 3;
+        public static final int CAN_FR_DRIVE = 4;
+        public static final int CAN_BL_DRIVE = 5;
+        public static final int CAN_BL_ANGLE = 6;
+        public static final int CAN_BR_DRIVE = 7;
+        public static final int CAN_BR_ANGLE = 8;
+        public static final int CAN_LEFT_CLIMB_MOTOR = 9;
+        public static final int CAN_RIGHT_CLIMB_MOTOR = 10;
         public static final int CAN_BL_CANCODER = 11;
         public static final int CAN_BR_CANCODER = 12;
         public static final int CAN_FR_CANCODER = 13;
         public static final int CAN_FL_CANCODER = 14;
-        public static final int CAN_ELE_R = 15;
-        public static final int CAN_ELE_L = 16;
-        public static final int CAN_ALG_L = 18;
-        public static final int CAN_ALG_R = 19;
-        public static final int CAN_COR_MOTOR = 21;
-        public static final int CAN_WRIST_MOTOR = 22;
+        public static final int CAN_ELEVATOR_R = 15;
+        public static final int CAN_ELE_L = 16; // not in use
+        public static final int CAN_dle = 17;
+        public static final int CAN_ALGAE_L = 18;
+        public static final int CAN_ALGAE_R = 19;
+        public static final int CAN_PDP = 20;
+        public static final int CAN_CORAL_INTAKE_MOTOR = 21;
+        public static final int CAN_WRIST_MOTOR = 22; // not in use
+
+        // PDP channels
+        public static final int PDP_ALGAE = 5;
 
         // Camera
         public static final int CAM_FPS = 10;
-        public static final int CAM_COR = 1;
-        public static final int CAM_CLM = 0;
+        public static final int CAM_CORAL = 1;
+        public static final int CAM_CLIMB = 0;
 
         // Thermocuples
         public static final int TC_FL = 0;

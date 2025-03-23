@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.CoralIntakeSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
@@ -113,6 +114,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("z_Thermocouple br (F)", (((tC_br.getVoltage() * 200) - 250) * 1.8) + 32);
         SmartDashboard.putNumber("Robot X Position", (m_robotContainer.drivebase.getPose().getX()));
         SmartDashboard.putNumber("Robot Y Position", (m_robotContainer.drivebase.getPose().getY()));
+        SmartDashboard.putNumber("Algae Intake Current (A)", AlgaeSubsystem.algae_intake_instance.getAlgaeCurrent());
     }
 
     /**
@@ -142,13 +144,9 @@ public class Robot extends TimedRobot {
         m_robotContainer.setMotorBrake(true);
         m_autonomousCommand = new SequentialCommandGroup(
 
-            // new ParallelCommandGroup(
-            //     NamedCommands.getCommand("L2")
-            // ),
-
             // Drive forward to reef from middle
             new ParallelCommandGroup(
-                m_robotContainer.drivebase.getAutonomousCommand("Step 1 Auto")
+                m_robotContainer.drivebase.getAutonomousCommand("Center 1 Coral 1 Algae")
             )
         );
         // schedule the autonomous command (example)

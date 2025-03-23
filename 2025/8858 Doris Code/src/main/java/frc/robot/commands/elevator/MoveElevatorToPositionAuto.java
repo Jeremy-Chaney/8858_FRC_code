@@ -1,5 +1,6 @@
 package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
@@ -22,6 +23,7 @@ public class MoveElevatorToPositionAuto extends Command {
     @Override
     public void execute(){
         elevatorSubsystem.MoveElevatorToPosition(targetPosition); // move elevator to target position
+        SmartDashboard.putString("elevator command", "execute");
     }
 
     @Override
@@ -29,11 +31,13 @@ public class MoveElevatorToPositionAuto extends Command {
         if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL){
             return true;
         }else{
-            return false; // never finish
+            return false;
         }
     }
+
     @Override
     public void end(boolean interrupted){
-        elevatorSubsystem.MoveElevatorToPosition(elevatorSubsystem.getEncoderPosition());
+        // elevatorSubsystem.MoveElevatorToPosition(elevatorSubsystem.getEncoderPosition());
+        SmartDashboard.putString("elevator command", "end");
     }
 }
