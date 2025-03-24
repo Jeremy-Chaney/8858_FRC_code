@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Step 1 Auto"
+            "pathName": "Center to Reef path"
           }
         },
         {
@@ -55,12 +55,6 @@
                 "data": {
                   "name": "ALGL_IN"
                 }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Step 3 Auto to Algae"
-                }
               }
             ]
           }
@@ -78,7 +72,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Step 4 Auto Algae to Processor"
+                  "pathName": "Center Algae to Processor"
                 }
               }
             ]

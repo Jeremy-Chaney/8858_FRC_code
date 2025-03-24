@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -21,6 +24,7 @@ import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.CoralIntakeSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
+import frc.robot.subsystems.swervedrive.LEDSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -125,6 +129,8 @@ public class Robot extends TimedRobot {
         m_robotContainer.setMotorBrake(true);
         disabledTimer.reset();
         disabledTimer.start();
+        LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.SOLID_RED);
+        LEDSubsystem.getInstance().holdState();
     }
 
     @Override
@@ -142,13 +148,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         m_robotContainer.setMotorBrake(true);
-        m_autonomousCommand = new SequentialCommandGroup(
-
-            // Drive forward to reef from middle
-            new ParallelCommandGroup(
-                m_robotContainer.drivebase.getAutonomousCommand("Center 1 Coral 1 Algae")
-            )
-        );
+        m_autonomousCommand = m_robotContainer.drivebase.getAutonomousCommand(SmartDashboard.getString("Auto Selector", ""));
         // schedule the autonomous command (example)
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
@@ -162,6 +162,8 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
     }
 
+    private Timer godzillaTimer = new Timer();
+    private boolean godzillaEnabled = false;
     @Override
     public void teleopInit() {
         // This makes sure that the autonomous stops running when
@@ -173,6 +175,9 @@ public class Robot extends TimedRobot {
         } else {
             CommandScheduler.getInstance().cancelAll();
         }
+        LEDSubsystem.getInstance().setMode(LEDSubsystem.default_state);
+        godzillaTimer.reset();
+        godzillaTimer.start();
     }
 
     /**
@@ -180,6 +185,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        if (!godzillaEnabled && godzillaTimer.get() > (2 * 60 + 15) - 20) {
+            if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
+                LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.RED_GODZILLA);
+            }
+            else if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
+                LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.BLUE_GODZILLA);
+            }
+            godzillaEnabled = true;
+        }
     }
 
     @Override

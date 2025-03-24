@@ -25,7 +25,7 @@ public class algaeSmartIntake extends Command {
 
     @Override
     public boolean isFinished() {
-        return (algaeSubsystem.getAlgaeCurrent() > 10);
+        return (algaeSubsystem.getAlgaeCurrent() > 14);
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.io.File;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.TwinkleAnimation;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -26,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.camera.SwitchCamera;
+import frc.robot.commands.climber.MoveClimber;
 import frc.robot.commands.climber.MoveClimberToPosition;
 import frc.robot.commands.elevator.MoveElevator;
 import frc.robot.commands.elevator.MoveElevatorToPosition;
@@ -36,11 +39,13 @@ import frc.robot.commands.intake.algaeIntake;
 import frc.robot.commands.intake.algaeSmartIntake;
 import frc.robot.commands.intake.coralIntake;
 import frc.robot.commands.intake.preScoreAutoCoralIntake;
+import frc.robot.commands.leds.SetLEDStateCommand;
 import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.CameraSubsystem;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.CoralIntakeSubsystem;
 import frc.robot.subsystems.swervedrive.ElevatorSubsystem;
+import frc.robot.subsystems.swervedrive.LEDSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
@@ -68,6 +73,7 @@ public class RobotContainer {
     private final CoralIntakeSubsystem coralSubsystem = new CoralIntakeSubsystem();
     private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
     private final CameraSubsystem cameraSubsystem = new CameraSubsystem();
+    private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
     private int preset = 0;
 
     public CANdle candle = new CANdle(OperatorConstants.CAN_dle);
@@ -112,6 +118,8 @@ public class RobotContainer {
             .withControllerHeadingAxis(() -> Math.sin(driverXbox.getRawAxis(2) * Math.PI) * (Math.PI * 2),
                     () -> Math.cos(driverXbox.getRawAxis(2) * Math.PI) * (Math.PI * 2))
             .headingWhile(true);
+    public Command activateGodzilla = new SetLEDStateCommand(LEDSubsystem.Mode.RED_GODZILLA, ledSubsystem);
+    public Command activateTwinkle = new SetLEDStateCommand(LEDSubsystem.Mode.TWINKLE_BLUE, ledSubsystem);
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -126,12 +134,13 @@ public class RobotContainer {
         NamedCommands.registerCommand("L2", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L2));
         NamedCommands.registerCommand("L3", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L3));
         NamedCommands.registerCommand("L4", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L4));
-        NamedCommands.registerCommand("ALGH", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGH));
-        NamedCommands.registerCommand("ALGL", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGL));
+        NamedCommands.registerCommand("ALGH", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGHI));
+        NamedCommands.registerCommand("ALGL", new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGLO));
         NamedCommands.registerCommand("ALGL_IN", new algaeSmartIntake(algaeSubsystem));
         NamedCommands.registerCommand("CoralIntake", new AutoCoralIntake(coralSubsystem));
         NamedCommands.registerCommand("PrepCoral", new preScoreAutoCoralIntake(coralSubsystem));
         NamedCommands.registerCommand("ScoreCoral", new AutoScoreCoral(coralSubsystem));
+        NamedCommands.registerCommand("Godzilla", activateGodzilla);
     }
 
 
@@ -149,14 +158,16 @@ public class RobotContainer {
      * Flight joysticks}.
      */
     private void configureBindings() {
+        SmartDashboard.putStringArray("Auto List", AutoBuilder.getAllAutoNames().toArray(new String[0]));
         Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
-        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(SwerveInputStream.of(drivebase.getSwerveDrive(),
-            () -> driverXbox.getLeftY(),
-            () -> driverXbox.getLeftX())
-            .withControllerRotationAxis(() -> driverXbox.getRightX() * -0.85)
-            .deadband(OperatorConstants.DEADBAND)
-            .scaleTranslation(0.8)
-            .allianceRelativeControl(true));
+        SwerveInputStream normalDrive = SwerveInputStream.of(drivebase.getSwerveDrive(),
+        () -> driverXbox.getLeftY(),
+        () -> driverXbox.getLeftX())
+        .withControllerRotationAxis(() -> driverXbox.getRightX() * -0.85)
+        .deadband(OperatorConstants.DEADBAND)
+        .scaleTranslation(0.8)
+        .allianceRelativeControl(true);
+        Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(normalDrive);
         Command driveLeftCoral = drivebase.driveFieldOriented(SwerveInputStream.of(drivebase.getSwerveDrive(),
             () -> -0.1,
             () -> 0)
@@ -181,7 +192,6 @@ public class RobotContainer {
             drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
         } else {
             drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-
         }
 
         if (Robot.isSimulation()) {
@@ -213,51 +223,52 @@ public class RobotContainer {
             */
 
             // Level 1 coral (the bin thing at the bottom of the reef)
-            driverXbox.povDown().onTrue(new ParallelCommandGroup(
+            controller_2.button(3).onTrue(new ParallelCommandGroup(
                     new SwitchCamera(cameraSubsystem, Constants.OperatorConstants.CAM_CORAL),
                     new SequentialCommandGroup(
                         new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L1),
                         new ParallelCommandGroup(
-                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L1)),
-                            new preScoreAutoCoralIntake(coralSubsystem)
+                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L1))
+                            // new preScoreAutoCoralIntake(coralSubsystem)
                         )
                     )
                 )
             );
             // Level 2 coral (lowest arm on the reef)
-            driverXbox.povLeft().onTrue(new ParallelCommandGroup(
+            controller_2.button(4).onTrue(new ParallelCommandGroup(
                     new SwitchCamera(cameraSubsystem, Constants.OperatorConstants.CAM_CORAL),
                     new SequentialCommandGroup(
                         new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L2),
                         new ParallelCommandGroup(
-                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L2)),
-                            new preScoreAutoCoralIntake(coralSubsystem)
+                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L2))
+                            // new preScoreAutoCoralIntake(coralSubsystem)
                         )
                     )
                 )
             );
 
             // Level 3 coral (middle arm on the reef)
-            driverXbox.povUp().onTrue(new ParallelCommandGroup(
+            controller_2.button(5).onTrue(new ParallelCommandGroup(
                     new SwitchCamera(cameraSubsystem, Constants.OperatorConstants.CAM_CORAL),
                     new SequentialCommandGroup(
                         new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L3),
                         new ParallelCommandGroup(
-                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L3)),
-                            new preScoreAutoCoralIntake(coralSubsystem)
+                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L3))
+                            // new preScoreAutoCoralIntake(coralSubsystem)
                         )
                     )
                 )
             );
 
             // Level 4 coral (top arm on the reef)
-            driverXbox.povRight().onTrue(new ParallelCommandGroup(
+            controller_2.button(6).onTrue(new ParallelCommandGroup(
                     new SwitchCamera(cameraSubsystem, Constants.OperatorConstants.CAM_CORAL),
                     new SequentialCommandGroup(
+                        activateTwinkle,
                         new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L4),
                         new ParallelCommandGroup(
-                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L4)),
-                            new preScoreAutoCoralIntake(coralSubsystem)
+                            Commands.run(() -> elevatorSubsystem.MoveElevatorToPosition(Constants.ELE_L4))
+                            // new preScoreAutoCoralIntake(coralSubsystem)
                         )
                     )
                 )
@@ -265,14 +276,14 @@ public class RobotContainer {
 
             // low algae
             driverXbox.leftTrigger(0.5).onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGL),
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGLO),
                     new algaeSmartIntake(algaeSubsystem)
                 )
             );
 
             // high algae
             driverXbox.rightTrigger(0.5).onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGH),
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGHI),
                     new algaeSmartIntake(algaeSubsystem)
                 )
             );
@@ -317,11 +328,17 @@ public class RobotContainer {
                 new AutoScoreCoral(coralSubsystem)
             ));
 
+            /* Climber Up */
             driverXbox.x().onTrue(new MoveClimberToPosition(climberSubsystem, 0.8, 0.1));
-            driverXbox.b().onTrue( new ParallelCommandGroup(
-                    new MoveClimberToPosition(climberSubsystem, 0.41, 0.4),
+
+            /* Climber Down */
+            driverXbox.b().whileTrue( new ParallelCommandGroup(
+                    new MoveClimberToPosition(climberSubsystem, 0.39, 0.4),
                     new SwitchCamera(cameraSubsystem, Constants.OperatorConstants.CAM_CLIMB)
                 )
+            );
+            driverXbox.b().onFalse(
+                new MoveClimber(climberSubsystem, 0.0)
             );
 
 
@@ -345,7 +362,7 @@ public class RobotContainer {
             controller_2.button(10).whileTrue(driveRightCoral);
             controller_2.button(1).onTrue(
                 Commands.runOnce(()->{
-                    CoralIntakeSubsystem.coral_intake_instance.coralIntake(0.4);
+                    CoralIntakeSubsystem.coral_intake_instance.coralIntake(Constants.COR_M_SPEED);
                 })
             );
             controller_2.button(1).onFalse(
@@ -353,13 +370,36 @@ public class RobotContainer {
                     CoralIntakeSubsystem.coral_intake_instance.coralIntake(0);
                 })
             );
-            controller_2.button(3).onTrue(
+            controller_2.button(2).onTrue(
                 Commands.runOnce(()->{
-                    CoralIntakeSubsystem.coral_intake_instance.coralIntake(-0.4);
+                    CoralIntakeSubsystem.coral_intake_instance.coralIntake(-Constants.COR_M_SPEED);
                 })
             );
-            controller_2.button(3).onFalse(
-                new AutoCoralIntake(coralSubsystem)
+            controller_2.button(2).onFalse(
+                Commands.runOnce(()->{
+                    CoralIntakeSubsystem.coral_intake_instance.coralIntake(0);
+                })
+            );
+            controller_2.button(7).onTrue(
+                Commands.runOnce(()->{
+                    drivebase.getDefaultCommand().cancel();
+                    drivebase.removeDefaultCommand();
+                    drivebase.setDefaultCommand(drivebase.driveFieldOriented(SwerveInputStream.of(drivebase.getSwerveDrive(),
+                    () -> driverXbox.getLeftY(),
+                    () -> driverXbox.getLeftX())
+                    .withControllerRotationAxis(() -> driverXbox.getRightX() * -0.85)
+                    .scaleTranslation(0.2)
+                    .robotRelative(true)));
+                    cameraSubsystem.SwitchCamera(Constants.OperatorConstants.CAM_CLIMB);
+                })
+            );
+            controller_2.button(7).onFalse(
+                Commands.runOnce(()->{
+                    drivebase.getDefaultCommand().cancel();
+                    drivebase.removeDefaultCommand();
+                    drivebase.setDefaultCommand(drivebase.driveFieldOriented(normalDrive));
+                    cameraSubsystem.SwitchCamera(Constants.OperatorConstants.CAM_CORAL);
+                })
             );
         }
 

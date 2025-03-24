@@ -36,11 +36,11 @@ public class AlgaeSubsystem extends SubsystemBase {
             }
             @Override
             public void initialize() {
-                algae_intake_instance.algaeIntake(0); // reset the PID controller
+                // algae_intake_instance.algaeIntake(0); // reset the PID controller
             }
             @Override
             public void execute() {
-                algae_intake_instance.algaeIntake(0); // hold the elevator at the last set position
+                algae_intake_instance.algaeIntake(-Constants.ALG_M_HOLD_SPEED); // hold the elevator at the last set position
             }
         });
 

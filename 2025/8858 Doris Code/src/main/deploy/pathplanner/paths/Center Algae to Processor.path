@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.6,
-        "y": 4.000071022727272
+        "x": 5.503397435897435,
+        "y": 4.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.277435897435897,
-        "y": 3.405769230769231
+        "x": 6.577128205128204,
+        "y": 2.9103846153846153
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Reef Algae Position"
     },
     {
       "anchor": {
-        "x": 3.9759615384615383,
-        "y": 2.0125
+        "x": 5.771730769230769,
+        "y": 0.6398717948717956
       },
       "prevControl": {
-        "x": 4.783660402097896,
-        "y": 2.0125
+        "x": 6.73725,
+        "y": 1.6459999999999988
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -144.3891475613312
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center Start",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

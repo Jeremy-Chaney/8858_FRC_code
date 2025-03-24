@@ -32,8 +32,8 @@ public final class Constants {
     public static final double ELE_L2 = (15.024);
     public static final double ELE_L3 = (36.142);
     public static final double ELE_L4 = (69.15);
-    public static final double ELE_ALGL = (33.0);
-    public static final double ELE_ALGH = (54.0);
+    public static final double ELE_ALGLO = (33.0);
+    public static final double ELE_ALGHI = (55.5);
     public static final double ELE_TOL = (0.35);
 
     // Positions for coral wrist angle for levels 1-4

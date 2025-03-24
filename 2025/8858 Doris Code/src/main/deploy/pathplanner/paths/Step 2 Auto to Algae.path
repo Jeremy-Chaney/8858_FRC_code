@@ -12,7 +12,7 @@
         "y": 3.902358974358975
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Center Reef Coral Position"
     },
     {
       "anchor": {
@@ -23,9 +23,25 @@
         "x": 6.347371794871794,
         "y": 3.898
       },
-      "nextControl": null,
+      "nextControl": {
+        "x": 6.847371794871794,
+        "y": 3.898
+      },
       "isLocked": false,
       "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.503397435897435,
+        "y": 4.0
+      },
+      "prevControl": {
+        "x": 5.751813192078347,
+        "y": 4.028100037029617
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Center Reef Algae Position"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +61,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Center Start",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

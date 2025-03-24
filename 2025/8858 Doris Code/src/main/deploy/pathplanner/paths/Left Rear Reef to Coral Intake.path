@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.597371794871794,
-        "y": 3.898
+        "x": 5.109,
+        "y": 4.951249999999999
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.955371794871794,
-        "y": 3.898
+        "x": 5.19675,
+        "y": 6.2675
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Left Rear Coral Position"
     },
     {
       "anchor": {
-        "x": 5.503397435897435,
-        "y": 4.0
+        "x": 1.3260000000000003,
+        "y": 7.0475
       },
       "prevControl": {
-        "x": 5.253397435897435,
-        "y": 4.0
+        "x": 2.106,
+        "y": 6.277250000000001
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Center Reef Algae Position"
+      "linkedName": "Left Coral Station"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 36.50144112050621
   },
   "reversed": false,
-  "folder": "Center Start",
+  "folder": "Left Start",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.62975778988138
+    "rotation": 146.85300416774402
   },
   "useDefaultConstraints": false
 }
