@@ -294,13 +294,16 @@ public class RobotContainer {
                     new AutoCoralIntake(coralSubsystem)
                 )
             );
-
+            
+            /*
+             * Algae Intake Out
+             */
+            driverXbox.rightBumper().onTrue(
+                new algaeIntake(algaeSubsystem, Constants.ALG_M_SPEED)
+            );
             // move algae intake
             driverXbox.a().onTrue(
                 new algaeSmartIntake(algaeSubsystem)
-            );
-            driverXbox.y().whileTrue(
-                new algaeIntake(algaeSubsystem, Constants.ALG_M_SPEED)
             );
 
             // CANdle controls
@@ -318,18 +321,10 @@ public class RobotContainer {
             // );
 
 
-            /*
-             * Coral Station preset
-             * Sets elevator/wrist position
-             * intakes coral constantly
-             */
-            driverXbox.rightBumper().onTrue(new ParallelCommandGroup(
-                Commands.run(()->elevatorSubsystem.MoveElevatorToPosition(elevatorSubsystem.lastTargetPosition)),
-                new AutoScoreCoral(coralSubsystem)
-            ));
+            
 
             /* Climber Up */
-            driverXbox.x().onTrue(new MoveClimberToPosition(climberSubsystem, 0.8, 0.1));
+            // driverXbox.x().onTrue(new MoveClimberToPosition(climberSubsystem, 0.8, 0.1));
 
             /* Climber Down */
             driverXbox.b().whileTrue( new ParallelCommandGroup(

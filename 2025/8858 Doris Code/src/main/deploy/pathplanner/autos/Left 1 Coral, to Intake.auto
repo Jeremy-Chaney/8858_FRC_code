@@ -19,13 +19,19 @@
         {
           "type": "named",
           "data": {
-            "name": "L1"
+            "name": "L2"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ScoreCoral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L1"
           }
         },
         {

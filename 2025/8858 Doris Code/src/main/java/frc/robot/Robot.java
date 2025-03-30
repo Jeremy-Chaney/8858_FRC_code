@@ -8,7 +8,11 @@ import java.util.Optional;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DataLogManager;
 // import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -41,6 +45,8 @@ public class Robot extends TimedRobot {
     private AnalogInput tC_fr;
     private AnalogInput tc_bl;
     private AnalogInput tC_br;
+    private DataLog log;
+    private DoubleLogEntry odometryXLog, odometryYLog, headingLog;
 
 
     private RobotContainer m_robotContainer;
@@ -68,6 +74,13 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
+
+        DataLogManager.start();
+        log = DataLogManager.getLog();
+        odometryXLog = new DoubleLogEntry(log, "Swerve/Odometry/X");
+        odometryYLog = new DoubleLogEntry(log, "Swerve/Odometry/Y");
+        headingLog = new DoubleLogEntry(log, "Swerve/Heading");
+
 
         // Thermocouples
         tc_fl = new AnalogInput(Constants.OperatorConstants.TC_FL);
@@ -119,6 +132,12 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Robot X Position", (m_robotContainer.drivebase.getPose().getX()));
         SmartDashboard.putNumber("Robot Y Position", (m_robotContainer.drivebase.getPose().getY()));
         SmartDashboard.putNumber("Algae Intake Current (A)", AlgaeSubsystem.algae_intake_instance.getAlgaeCurrent());
+
+        //Advantage Scope Logging
+        odometryXLog.append(m_robotContainer.drivebase.getPose().getX());
+        odometryYLog.append(m_robotContainer.drivebase.getPose().getY());
+        headingLog.append(m_robotContainer.drivebase.getHeading().getDegrees());
+
     }
 
     /**
@@ -126,6 +145,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
+        log.flush();
         m_robotContainer.setMotorBrake(true);
         disabledTimer.reset();
         disabledTimer.start();

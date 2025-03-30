@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right to Reef path"
+            "pathName": "Center to Reef path"
           }
         },
         {
@@ -37,7 +37,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Rear Reef to Coral Intake"
+            "pathName": "Center Reef to Left Coral Intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralIntake"
           }
         }
       ]
