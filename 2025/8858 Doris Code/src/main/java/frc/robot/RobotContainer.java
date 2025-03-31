@@ -298,7 +298,7 @@ public class RobotContainer {
             /*
              * Algae Intake Out
              */
-            driverXbox.rightBumper().onTrue(
+            driverXbox.rightBumper().whileTrue(
                 new algaeIntake(algaeSubsystem, Constants.ALG_M_SPEED)
             );
             // move algae intake
@@ -328,7 +328,7 @@ public class RobotContainer {
 
             /* Climber Down */
             driverXbox.b().whileTrue( new ParallelCommandGroup(
-                    new MoveClimberToPosition(climberSubsystem, 0.39, 0.4),
+                    new MoveClimberToPosition(climberSubsystem, 0.39-0.166667, 0.4),
                     new SwitchCamera(cameraSubsystem, Constants.OperatorConstants.CAM_CLIMB)
                 )
             );

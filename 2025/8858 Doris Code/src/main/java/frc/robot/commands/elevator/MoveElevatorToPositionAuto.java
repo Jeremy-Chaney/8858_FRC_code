@@ -1,5 +1,6 @@
 package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -28,11 +29,19 @@ public class MoveElevatorToPositionAuto extends Command {
 
     @Override
     public boolean isFinished(){
+       if(DriverStation.isAutonomous()){
+        if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL * 1.5){
+            return true;
+        }else{
+            return false;
+        }
+       } else{
         if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL){
             return true;
         }else{
             return false;
         }
+       }
     }
 
     @Override
