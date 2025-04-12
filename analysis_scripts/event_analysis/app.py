@@ -4,7 +4,8 @@ import plotly.utils
 import json
 import requests
 from tba_rank_by_pen_pts import get_pen_pts_ranks_by_team, BASE_URL, headers
-from get_rp_per_match import get_rp_per_match, get_event_name, get_event_year
+from tba_analysis.analysis_func import *
+from get_rp_per_match import get_rp_per_match
 
 app = Flask(__name__)
 
@@ -62,7 +63,7 @@ def analyze():
     ])
 
     pen_fig.update_layout(
-        title=f"Penalty Points Differential by Team - {get_event_name(BASE_URL, event_key, headers)} ({get_event_year(BASE_URL, event_key, headers)})",
+        title=f"Penalty Points Differential by Team - {get_event_name(event_key)} ({get_event_year(event_key)})",
         xaxis_title="Team Number",
         yaxis_title="Penalty Points Differential",
         template="plotly_dark"
@@ -100,7 +101,7 @@ def analyze():
             )
 
     rp_fig.update_layout(
-        title=f"Ranking Points by Match - {get_event_name(BASE_URL, event_key, headers)} ({get_event_year(BASE_URL, event_key, headers)})",
+        title=f"Ranking Points by Match - {get_event_name(event_key)} ({get_event_year(event_key)})",
         xaxis_title="Match #",
         yaxis_title="Ranking Points",
         template='plotly_dark',
