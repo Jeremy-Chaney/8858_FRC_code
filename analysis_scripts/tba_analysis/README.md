@@ -1,4 +1,4 @@
-"""
+
 # [The Blue Alliance](https://www.thebluealliance.com) API Data-Fetching Functions
 By [Team 8858 "Beast From the East"](https://www.thebluealliance.com/team/8858)
 
@@ -33,4 +33,3 @@ To install this library, follow these steps:
 6. The first time you run a script with this library imported, `api_key.py` will be generated and you will be prompted to enter the API key from step 4.
     - Once the API key is entered once, you will not need to enter it again
     - `api_key.py` is an unmanaged file in the repository and should not be shared between users
-"""
