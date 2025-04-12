@@ -1,7 +1,7 @@
 # Analysis Scripts
 
 Within this directory are the analysis scripts of [Team 8858 "Beast From the East"](https://www.thebluealliance.com/team/8858).
-- Under `tba_analysis/` is a library of functions that can simplify the process of scripting data-collection from [Blue Alliance's API](https://www.thebluealliance.com/apidocs).
+- Under `tba_analysis/` is a library of functions that can simplify the process of scripting data-collection from [The Blue Alliance's API](https://www.thebluealliance.com/apidocs).
 - Other folders below this directory are examples of some of the applications we've developed to collect data and analyze performance.
 
 ## Prerequisites
@@ -28,6 +28,7 @@ pip install -e .
 
 3. Set up the API Key
     - API Key can be generated from The Blue Alliance's [account page](https://www.thebluealliance.com/account) under "Read API Keys"
+    - Each user only needs one key
     - automated method (recommended)
         - Running any of the apps will prompt you on providing the API Key if it's detected that this key has not been provided previously
         - API Key will be stored inside of `./tba_analysis/api_key.py` (relative to this directory)
