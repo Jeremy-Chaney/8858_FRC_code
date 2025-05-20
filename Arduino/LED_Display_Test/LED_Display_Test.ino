@@ -1,5 +1,4 @@
 #include <FastLED.h>
-#include "Serial.h"
 
 // LED strip configuration
 #define NUM_LEDS    300
@@ -64,37 +63,6 @@ void setup() {
     FastLED.addLeds<WS2812, LED_PIN3, GRB>(leds[3], NUM_LEDS);
     FastLED.addLeds<WS2812, LED_PIN4, GRB>(leds[4], NUM_LEDS);
 
-    // for(int row = 0; row < NUM_ROWS; row++){
-    //     for(int i = 0; i < NUM_LEDS; i++){
-    //         if(i % 2){
-    //             if(row % 2){
-    //                 leds[row][i] = CRGB::Red;
-    //             } else {
-    //                 leds[row][i] = CRGB::Blue;
-    //             }
-    //         }
-    //     }
-    // }
-
-    // FastLED.show();   // Push changes to the strip
-    // delay(1000);      // Keep them on for a second before starting the loop
-    // FastLED.clear();  // Clear them before starting the loop
-
-    // for(int row = 0; row < NUM_ROWS; row++){
-    //     for(int i = 0; i < NUM_LEDS; i++){
-    //         if(!(i % 2)){
-    //             if(row % 2){
-    //                 leds[row][i] = CRGB::Blue;
-    //             } else {
-    //                 leds[row][i] = CRGB::Red;
-    //             }
-    //         }
-    //     }
-    // }
-    // FastLED.show();   // Push changes to the strip
-    // delay(1000);      // Keep them on for a second before starting the loop
-    // FastLED.clear();  // Clear them before starting the loop
-
     FastLED.setBrightness(20);
 
     unsigned long finish_time = millis() + (1000 * boot_time_s);
@@ -113,7 +81,7 @@ String str_in = "default";
 String inputString = "";
 String str_in_last = "default";
 
-String disp_str = "ABC";
+String disp_str = "TEAM 8858 BEAST FROM THE EAST - WYLIE EAST HS - WYLIE, TEXAS";
 int disp_speed = 7; // seconds
 
 // Brightness Variables
@@ -192,10 +160,11 @@ void loop() {
 
     EVERY_N_MILLIS(20){
         if(str_in == "rbeam"){
-            rainbowBeam(2, 60, 0);
-            rainbowBeam(2, 65, 1);
-            rainbowBeam(2, 70, 2);
-            rainbowBeam(2, 55, 3);
+            rainbowBeam(2, 40, 0);
+            rainbowBeam(2, 40, 1);
+            rainbowBeam(2, 40, 2);
+            rainbowBeam(2, 40, 3);
+            rainbowBeam(2, 40, 4);
         }
 
         if(str_in == "red"){
@@ -203,6 +172,7 @@ void loop() {
             beam(5, 10, CRGB::Red, 1);
             beam(5, 10, CRGB::Red, 2);
             beam(5, 10, CRGB::Red, 3);
+            beam(5, 10, CRGB::Red, 4);
         }
 
         if(str_in == "blue"){
@@ -210,6 +180,7 @@ void loop() {
             beam(5, 10, CRGB::Blue, 1);
             beam(5, 10, CRGB::Blue, 2);
             beam(5, 10, CRGB::Blue, 3);
+            beam(5, 10, CRGB::Blue, 4);
         }
 
         if(str_in == "purple"){
@@ -217,6 +188,7 @@ void loop() {
             beam(5, 10, CRGB::Purple, 1);
             beam(5, 10, CRGB::Purple, 2);
             beam(5, 10, CRGB::Purple, 3);
+            beam(5, 10, CRGB::Purple, 4);
         }
 
         if(str_in == "green"){
@@ -224,6 +196,7 @@ void loop() {
             beam(5, 10, CRGB::Green, 1);
             beam(5, 10, CRGB::Green, 2);
             beam(5, 10, CRGB::Green, 3);
+            beam(5, 10, CRGB::Green, 4);
         }
 
         if(str_in == "rwall"){
@@ -253,14 +226,15 @@ void loop() {
         }
 
         if(str_in == "default"){
-            beam(1, 40, CRGB::Purple, 0);
-            beam(1, 40, CRGB::Red, 1);
-            beam(1, 40, CRGB::Green, 2);
-            beam(1, 40, CRGB::Blue, 3);
+            beam(5, 40, CRGB::Purple, 0);
+            beam(5, 40, CRGB::Blue, 1);
+            beam(5, 40, CRGB::Green, 2);
+            beam(5, 40, CRGB::Yellow, 3);
+            beam(5, 40, CRGB::Orange, 4);
         }
 
         if(str_in == "disp"){
-            if(string_to_led_map(disp_str, disp_speed, CRGB::Purple, false)){
+            if(string_to_led_map(disp_str, disp_speed, CRGB::Blue, false)){
                 str_in = "disp_done";
                 Serial.print("INFO : Done printing message \"");
                 Serial.print(disp_str);
@@ -268,7 +242,7 @@ void loop() {
             }
         }
         if(str_in == "disp_done"){ // wait here while
-            string_to_led_map(disp_str, disp_speed, CRGB::Purple, true);
+            string_to_led_map(disp_str, disp_speed, CRGB::Blue, true);
         }
         FastLED.show();
     }

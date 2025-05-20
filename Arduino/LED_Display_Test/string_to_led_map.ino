@@ -70,11 +70,11 @@ const int char_patterns[][NUM_ROWS][WIDTH_CHAR] = {
     },
     //I
     {
-        {0, 1, 1, 1, 0},
+        {1, 1, 1, 1, 1},
         {0, 0, 1, 0, 0},
         {0, 0, 1, 0, 0},
         {0, 0, 1, 0, 0},
-        {0, 1, 1, 1, 0}
+        {1, 1, 1, 1, 1}
     },
     //J
     {
@@ -150,15 +150,15 @@ const int char_patterns[][NUM_ROWS][WIDTH_CHAR] = {
     },
     //S
     {
-        {0, 0, 1, 1, 0},
-        {0, 1, 0, 0, 0},
+        {0, 1, 1, 1, 0},
+        {1, 1, 0, 0, 1},
         {0, 0, 1, 0, 0},
-        {0, 0, 0, 1, 0},
-        {0, 1, 1, 0, 0}
+        {1, 0, 0, 1, 1},
+        {0, 1, 1, 1, 0}
     },
     //T
     {
-        {0, 1, 1, 1, 0},
+        {1, 1, 1, 1, 1},
         {0, 0, 1, 0, 0},
         {0, 0, 1, 0, 0},
         {0, 0, 1, 0, 0},
@@ -500,6 +500,46 @@ const int char_patterns[][NUM_ROWS][WIDTH_CHAR] = {
         {0, 0, 0, 1, 0},
         {0, 0, 0, 1, 0}
     },
+    //.
+    {
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0}
+    },
+    //,
+    {
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 1, 0, 0, 0}
+    },
+    //!
+    {
+        {0, 1, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0}
+    },
+    //?
+    {
+        {1, 1, 1, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 1, 0, 0, 0}
+    },
+    //-
+    {
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 1, 1, 1, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0}
+    },
     // ' ' (space)
     {
         {0, 0, 0, 0, 0},
@@ -574,6 +614,11 @@ const char char_map[] = {
     '7',
     '8',
     '9',
+    '.',
+    ',',
+    '!',
+    '?',
+    '-',
     ' '
 };  // Must match the pattern order above!
 
@@ -587,35 +632,48 @@ bool shift_char(char char_in, int t_seconds, CRGB color){
 
     if(millis() > lastStringUpdate + update_rate){
         lastStringUpdate = millis();
-        for(int i = 0; i < NUM_CHARS; i++){
-            if (char_map[i] == char_in){ // found the correct char index in char_map and char_patterns!
-                for(int row = 0; row < NUM_ROWS; row++){ // loop through the LED strips
-
-                    // shift the current frame by 1 LED
-                    for(int led_idx = NUM_LEDS - 1; led_idx > 0; led_idx--){
-                        leds[row][led_idx] = leds[row][led_idx - 1];
-                    }
-
-                    // shift in the next column of the character
-                    if(char_patterns[i][row][char_idx] == 1){
-                        leds[row][0] = color;
-                    } else {
-                        leds[row][0] = CRGB::Black;
-                    }
-
-                }
-
-                // keep track of which column of the character we're on
-            }
-
-        }
-
         if(char_idx >= WIDTH_CHAR){
+            for(int row = 0; row < NUM_ROWS; row++){
+                // shift the current frame by 1 LED
+                for(int led_idx = NUM_LEDS - 1; led_idx > 0; led_idx--){
+                    leds[row][led_idx] = leds[row][led_idx - 1];
+                }
+                leds[row][0] = CRGB::Black;
+            }
             char_idx = 0;
             done = true;
         } else {
+            for(int i = 0; i < NUM_CHARS; i++){
+                if (char_map[i] == char_in){ // found the correct char index in char_map and char_patterns!
+                    for(int row = 0; row < NUM_ROWS; row++){ // loop through the LED strips
+
+                        // shift the current frame by 1 LED
+                        for(int led_idx = NUM_LEDS - 1; led_idx > 0; led_idx--){
+                            leds[row][led_idx] = leds[row][led_idx - 1];
+                        }
+
+                        // shift in the next column of the character
+                        if(char_patterns[i][row][char_idx] == 1){
+                            leds[row][0] = color;
+                        } else {
+                            leds[row][0] = CRGB::Black;
+                        }
+
+                    }
+
+                    // keep track of which column of the character we're on
+                }
+
+            }
             char_idx++;
         }
+
+        // if(char_idx >= WIDTH_CHAR){
+        //     char_idx = 0;
+        //     done = true;
+        // } else {
+        //     char_idx++;
+        // }
     }
 
     return done;

@@ -9,8 +9,11 @@ bool boot_animation(unsigned long finish_time){
     bool done = false;
 
         if(millis() < finish_time){
-            beam(1, 20, CRGB::Cyan, 0);
-            beam(1, 20, CRGB::Red, 1);
+            beam(10, 20, CRGB::Purple, 0);
+            beam(10, 20, CRGB::Blue, 1);
+            beam(10, 20, CRGB::Green, 2);
+            beam(10, 20, CRGB::Yellow, 3);
+            beam(10, 20, CRGB::Orange, 4);
         } else {
             done = true;
         }
