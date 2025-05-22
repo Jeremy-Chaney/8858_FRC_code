@@ -34,7 +34,7 @@ bool rainbow_row_en[NUM_ROWS] = {
 
 unsigned long last_LEDupdate[NUM_ROWS];
 
-int boot_time_s = 5;
+int boot_time_s = 10;
 
 /**
   * This is a command that can be run to clear the Serial Monitor feed
