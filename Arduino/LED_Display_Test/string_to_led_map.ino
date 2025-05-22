@@ -626,9 +626,14 @@ const char char_map[] = {
 const uint8_t NUM_CHARS = sizeof(char_map) / sizeof(char_map[0]);
 
 int char_idx = 0;
-bool shift_char(char char_in, int t_seconds, CRGB color){
+bool shift_char(char char_in, int t_seconds, CRGB color, bool fill){
     bool done = false;
     unsigned long update_rate = (t_seconds*1000) / (NUM_LEDS);
+
+    // FIXME: (maybe) Converts every lower-case letter to upper-case as maps have not been made for lowercase
+    if(char_in >= 'a' && char_in <= 'z'){
+        char_in = char_in - 'a' + 'A';
+    }
 
     if(millis() > lastStringUpdate + update_rate){
         lastStringUpdate = millis();
@@ -665,36 +670,37 @@ bool shift_char(char char_in, int t_seconds, CRGB color){
                 }
 
             }
-            char_idx++;
-        }
 
-        // if(char_idx >= WIDTH_CHAR){
-        //     char_idx = 0;
-        //     done = true;
-        // } else {
-        //     char_idx++;
-        // }
+            // if filling, just re-initialize the idx every time, otherwise increment
+            if(fill){
+                char_idx = 0;
+            } else {
+                char_idx++;
+            }
+        }
     }
 
     return done;
 }
 
 unsigned str_idx = 0;
-bool string_to_led_map(String str_in, int t_seconds, CRGB color, bool fill){
+bool string_to_led_map(String str_in, int t_seconds, CRGB color, bool fill, bool reset){
     bool done = false;
 
     if(fill){
         shift_char(
             ' ', // shift in a space
             t_seconds,
-            color
+            color,
+            fill
         );
     } else {
         if(str_idx <= str_in.length()){ // print characters until you get to the end of the string
             if(shift_char(
                 str_in[str_idx],
                 t_seconds,
-                color
+                color,
+                fill
             )) {
                 str_idx++;
             }
@@ -703,10 +709,15 @@ bool string_to_led_map(String str_in, int t_seconds, CRGB color, bool fill){
             shift_char(
                 ' ', // shift in a space
                 t_seconds,
-                color
+                color,
+                fill
             );
             str_idx = 0;
         }
+    }
+
+    if(reset){
+        str_idx = 0;
     }
     return done;
 }
