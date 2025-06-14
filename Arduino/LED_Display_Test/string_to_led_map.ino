@@ -423,82 +423,82 @@ const int char_patterns[][NUM_ROWS][WIDTH_CHAR] = {
     //0
     {
         {0, 1, 1, 1, 0},
-        {0, 1, 0, 1, 0},
-        {0, 1, 0, 1, 0},
-        {0, 1, 0, 1, 0},
+        {1, 0, 0, 1, 1},
+        {1, 0, 1, 0, 1},
+        {1, 1, 0, 0, 1},
         {0, 1, 1, 1, 0}
     },
     //1
     {
         {0, 0, 1, 0, 0},
         {0, 1, 1, 0, 0},
+        {1, 0, 1, 0, 0},
         {0, 0, 1, 0, 0},
-        {0, 0, 1, 0, 0},
-        {0, 1, 1, 1, 0}
+        {1, 1, 1, 1, 1}
     },
     //2
     {
         {0, 1, 1, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 1, 1, 1, 0},
+        {1, 0, 0, 0, 1},
+        {0, 0, 1, 1, 0},
         {0, 1, 0, 0, 0},
-        {0, 1, 1, 1, 0}
+        {1, 1, 1, 1, 1}
     },
     //3
     {
         {0, 1, 1, 1, 0},
+        {1, 0, 0, 0, 1},
         {0, 0, 0, 1, 0},
-        {0, 1, 1, 1, 0},
-        {0, 0, 0, 1, 0},
+        {1, 0, 0, 0, 1},
         {0, 1, 1, 1, 0}
     },
     //4
     {
-        {0, 1, 0, 1, 0},
-        {0, 1, 0, 1, 0},
-        {0, 1, 1, 1, 0},
+        {1, 0, 0, 1, 0},
+        {1, 0, 0, 1, 0},
+        {1, 1, 1, 1, 1},
         {0, 0, 0, 1, 0},
         {0, 0, 0, 1, 0}
     },
     //5
     {
-        {0, 1, 1, 1, 0},
-        {0, 1, 0, 0, 0},
-        {0, 1, 1, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 1, 1, 1, 0}
+        {1, 1, 1, 1, 1},
+        {1, 0, 0, 0, 0},
+        {1, 1, 1, 1, 0},
+        {0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 0}
     },
     //6
     {
         {0, 1, 1, 1, 0},
-        {0, 1, 0, 0, 0},
-        {0, 1, 1, 1, 0},
-        {0, 1, 0, 1, 0},
+        {1, 0, 0, 0, 0},
+        {1, 1, 1, 1, 0},
+        {1, 0, 0, 0, 1},
         {0, 1, 1, 1, 0}
     },
     //7
     {
+        {1, 1, 1, 1, 1},
+        {0, 0, 0, 1, 0},
         {0, 1, 1, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 1, 0}
+        {0, 1, 0, 0, 0},
+        {1, 0, 0, 0, 0}
     },
     //8
     {
         {0, 1, 1, 1, 0},
-        {0, 1, 0, 1, 0},
+        {1, 0, 0, 0, 1},
         {0, 1, 1, 1, 0},
-        {0, 1, 0, 1, 0},
+        {1, 0, 0, 0, 1},
         {0, 1, 1, 1, 0}
     },
     //9
     {
         {0, 1, 1, 1, 0},
-        {0, 1, 0, 1, 0},
-        {0, 1, 1, 1, 0},
-        {0, 0, 0, 1, 0},
-        {0, 0, 0, 1, 0}
+        {1, 0, 0, 0, 1},
+        {0, 1, 1, 1, 1},
+        {0, 0, 0, 0, 1},
+        {0, 1, 1, 1, 0}
     },
     //.
     {
@@ -539,6 +539,54 @@ const int char_patterns[][NUM_ROWS][WIDTH_CHAR] = {
         {0, 1, 1, 1, 0},
         {0, 0, 0, 0, 0},
         {0, 0, 0, 0, 0}
+    },
+    // '
+    {
+        {0, 0, 1, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0}
+    },
+    // "
+    {
+        {0, 1, 0, 1, 0},
+        {0, 1, 0, 1, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0}
+    },
+    // :
+    {
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0}
+    },
+    // ;
+    {
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0},
+        {0, 0, 1, 0, 0},
+        {0, 1, 0, 0, 0}
+    },
+    // (
+    {
+        {0, 0, 1, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 1, 0, 0, 0},
+        {0, 0, 1, 0, 0}
+    },
+    // )
+    {
+        {0, 0, 1, 0, 0},
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 1, 0},
+        {0, 0, 0, 1, 0},
+        {0, 0, 1, 0, 0}
     },
     // ' ' (space)
     {
@@ -619,11 +667,35 @@ const char char_map[] = {
     '!',
     '?',
     '-',
+    '\'',
+    '\"',
+    ':',
+    ';',
+    '(',
+    ')',
     ' '
 };  // Must match the pattern order above!
 
 // Calculate how many characters have bit maps
 const uint8_t NUM_CHARS = sizeof(char_map) / sizeof(char_map[0]);
+
+// call this to shift ever LED's status up the sign
+void shift_up(int num_shift){
+    for(int row = 0; row < NUM_ROWS; row++){
+        for(int led_idx = NUM_LEDS - num_shift; led_idx > 0; led_idx--){
+            leds[row][led_idx] = leds[row][led_idx - num_shift];
+        }
+    }
+}
+
+// call this to shift ever LED's status down the sign
+void shift_down(int num_shift){
+    for(int row = 0; row < NUM_ROWS; row++){
+        for(int led_idx = num_shift; led_idx < NUM_LEDS; led_idx++){
+            leds[row][led_idx] = leds[row][led_idx + num_shift];
+        }
+    }
+}
 
 int char_idx = 0;
 bool shift_char(char char_in, int t_seconds, CRGB color, bool fill){
@@ -637,12 +709,10 @@ bool shift_char(char char_in, int t_seconds, CRGB color, bool fill){
 
     if(millis() > lastStringUpdate + update_rate){
         lastStringUpdate = millis();
+        // shift the current frame by 1 LED
+        shift_up(1);
         if(char_idx >= WIDTH_CHAR){
             for(int row = 0; row < NUM_ROWS; row++){
-                // shift the current frame by 1 LED
-                for(int led_idx = NUM_LEDS - 1; led_idx > 0; led_idx--){
-                    leds[row][led_idx] = leds[row][led_idx - 1];
-                }
                 leds[row][0] = CRGB::Black;
             }
             char_idx = 0;
@@ -651,11 +721,6 @@ bool shift_char(char char_in, int t_seconds, CRGB color, bool fill){
             for(int i = 0; i < NUM_CHARS; i++){
                 if (char_map[i] == char_in){ // found the correct char index in char_map and char_patterns!
                     for(int row = 0; row < NUM_ROWS; row++){ // loop through the LED strips
-
-                        // shift the current frame by 1 LED
-                        for(int led_idx = NUM_LEDS - 1; led_idx > 0; led_idx--){
-                            leds[row][led_idx] = leds[row][led_idx - 1];
-                        }
 
                         // shift in the next column of the character
                         if(char_patterns[i][row][char_idx] == 1){

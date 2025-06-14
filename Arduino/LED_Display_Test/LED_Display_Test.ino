@@ -3,7 +3,7 @@
 // LED strip configuration
 #define NUM_LEDS    300
 #define NUM_ROWS    5
-#define FIFO_SIZE   100
+#define FIFO_SIZE   500
 
 #define LED_PIN0 9
 #define LED_PIN1 10
@@ -86,6 +86,313 @@ enum disp_mode {
 };
 disp_mode mode_sel = BEAM;
 
+CRGB color_dec[] = {
+    CRGB::White, // default color
+    CRGB::AliceBlue,
+    CRGB::Amethyst,
+    CRGB::AntiqueWhite,
+    CRGB::Aqua,
+    CRGB::Aquamarine,
+    CRGB::Azure,
+    CRGB::Beige,
+    CRGB::Bisque,
+    CRGB::Black,
+    CRGB::BlanchedAlmond,
+    CRGB::Blue,
+    CRGB::BlueViolet,
+    CRGB::Brown,
+    CRGB::BurlyWood,
+    CRGB::CadetBlue,
+    CRGB::Chartreuse,
+    CRGB::Chocolate,
+    CRGB::Coral,
+    CRGB::CornflowerBlue,
+    CRGB::Cornsilk,
+    CRGB::Crimson,
+    CRGB::Cyan,
+    CRGB::DarkBlue,
+    CRGB::DarkCyan,
+    CRGB::DarkGoldenrod,
+    CRGB::DarkGray,
+    CRGB::DarkGrey,
+    CRGB::DarkGreen,
+    CRGB::DarkKhaki,
+    CRGB::DarkMagenta,
+    CRGB::DarkOliveGreen,
+    CRGB::DarkOrange,
+    CRGB::DarkOrchid,
+    CRGB::DarkRed,
+    CRGB::DarkSalmon,
+    CRGB::DarkSeaGreen,
+    CRGB::DarkSlateBlue,
+    CRGB::DarkSlateGray,
+    CRGB::DarkSlateGrey,
+    CRGB::DarkTurquoise,
+    CRGB::DarkViolet,
+    CRGB::DeepPink,
+    CRGB::DeepSkyBlue,
+    CRGB::DimGray,
+    CRGB::DimGrey,
+    CRGB::DodgerBlue,
+    CRGB::FireBrick,
+    CRGB::FloralWhite,
+    CRGB::ForestGreen,
+    CRGB::Fuchsia,
+    CRGB::Gainsboro,
+    CRGB::GhostWhite,
+    CRGB::Gold,
+    CRGB::Goldenrod,
+    CRGB::Gray,
+    CRGB::Grey,
+    CRGB::Green,
+    CRGB::GreenYellow,
+    CRGB::Honeydew,
+    CRGB::HotPink,
+    CRGB::IndianRed,
+    CRGB::Indigo,
+    CRGB::Ivory,
+    CRGB::Khaki,
+    CRGB::Lavender,
+    CRGB::LavenderBlush,
+    CRGB::LawnGreen,
+    CRGB::LemonChiffon,
+    CRGB::LightBlue,
+    CRGB::LightCoral,
+    CRGB::LightCyan,
+    CRGB::LightGoldenrodYellow,
+    CRGB::LightGreen,
+    CRGB::LightGrey,
+    CRGB::LightPink,
+    CRGB::LightSalmon,
+    CRGB::LightSeaGreen,
+    CRGB::LightSkyBlue,
+    CRGB::LightSlateGray,
+    CRGB::LightSlateGrey,
+    CRGB::LightSteelBlue,
+    CRGB::LightYellow,
+    CRGB::Lime,
+    CRGB::LimeGreen,
+    CRGB::Linen,
+    CRGB::Magenta,
+    CRGB::Maroon,
+    CRGB::MediumAquamarine,
+    CRGB::MediumBlue,
+    CRGB::MediumOrchid,
+    CRGB::MediumPurple,
+    CRGB::MediumSeaGreen,
+    CRGB::MediumSlateBlue,
+    CRGB::MediumSpringGreen,
+    CRGB::MediumTurquoise,
+    CRGB::MediumVioletRed,
+    CRGB::MidnightBlue,
+    CRGB::MintCream,
+    CRGB::MistyRose,
+    CRGB::Moccasin,
+    CRGB::NavajoWhite,
+    CRGB::Navy,
+    CRGB::OldLace,
+    CRGB::Olive,
+    CRGB::OliveDrab,
+    CRGB::Orange,
+    CRGB::OrangeRed,
+    CRGB::Orchid,
+    CRGB::PaleGoldenrod,
+    CRGB::PaleGreen,
+    CRGB::PaleTurquoise,
+    CRGB::PaleVioletRed,
+    CRGB::PapayaWhip,
+    CRGB::PeachPuff,
+    CRGB::Peru,
+    CRGB::Pink,
+    CRGB::Plaid,
+    CRGB::Plum,
+    CRGB::PowderBlue,
+    CRGB::Purple,
+    CRGB::Red,
+    CRGB::RosyBrown,
+    CRGB::RoyalBlue,
+    CRGB::SaddleBrown,
+    CRGB::Salmon,
+    CRGB::SandyBrown,
+    CRGB::SeaGreen,
+    CRGB::Seashell,
+    CRGB::Sienna,
+    CRGB::Silver,
+    CRGB::SkyBlue,
+    CRGB::SlateBlue,
+    CRGB::SlateGray,
+    CRGB::SlateGrey,
+    CRGB::Snow,
+    CRGB::SpringGreen,
+    CRGB::SteelBlue,
+    CRGB::Tan,
+    CRGB::Teal,
+    CRGB::Thistle,
+    CRGB::Tomato,
+    CRGB::Turquoise,
+    CRGB::Violet,
+    CRGB::Wheat,
+    CRGB::White,
+    CRGB::WhiteSmoke,
+    CRGB::Yellow,
+    CRGB::YellowGreen
+};
+
+enum color_enum {
+    DEFAULT_COLOR,
+    AliCEBLUE,
+    AMETHYST,
+    ANTIQUEWHITE,
+    AQUA,
+    AQUAMARINE,
+    AZURE,
+    BEIGE,
+    BISQUE,
+    BLACK,
+    BLANCHEDALMOND,
+    BLUE,
+    BLUEVIOLET,
+    BROWN,
+    BURLYWOOD,
+    CADETBLUE,
+    CHARTREUSE,
+    CHOCOLATE,
+    CORAL,
+    CORNFLOWERBLUE,
+    CORNSILK,
+    CRIMSON,
+    CYAN,
+    DARKBLUE,
+    DARKCYAN,
+    DARKGOLDENROD,
+    DARKGRAY,
+    DARKGREY,
+    DARKGREEN,
+    DARKKHAKI,
+    DARKMAGENTA,
+    DARKOLIVEGREEN,
+    DARKORANGE,
+    DARKORCHID,
+    DARKRED,
+    DARKSALMON,
+    DARKSEAGREEN,
+    DARKSLATEBLUE,
+    DARKSLATEGRAY,
+    DARKSLATEGREY,
+    DARKTURQUOISE,
+    DARKVIOLET,
+    DEEPPINK,
+    DEEPSKYBLUE,
+    DIMGRAY,
+    DIMGREY,
+    DODGERBLUE,
+    FIREBRICK,
+    FLORALWHITE,
+    FORESTGREEN,
+    FUCHSIA,
+    GAINSBORO,
+    GHOSTWHITE,
+    GOLD,
+    GOLDENROD,
+    GRAY,
+    GREY,
+    GREEN,
+    GREENYELLOW,
+    HONEYDEW,
+    HOTPINK,
+    INDIANRED,
+    INDIGO,
+    IVORY,
+    KHAKI,
+    LAVENDER,
+    LAVENDERBLUSH,
+    LAWNGREEN,
+    LEMONCHIFFON,
+    LIGHTBLUE,
+    LIGHTCORAL,
+    LIGHTCYAN,
+    LIGHTGOLDENRODYELLOW,
+    LIGHTGREEN,
+    LIGHTGREY,
+    LIGHTPINK,
+    LIGHTSALMON,
+    LIGHTSEAGREEN,
+    LIGHTSKYBLUE,
+    LIGHTSLATEGRAY,
+    LIGHTSLATEGREY,
+    LIGHTSTEELBLUE,
+    LIGHTYELLOW,
+    LIME,
+    LIMEGREEN,
+    LINEN,
+    MAGENTA,
+    MAROON,
+    MEDIUMAQUAMARINE,
+    MEDIUMBLUE,
+    MEDIUMORCHID,
+    MEDIUMPURPLE,
+    MEDIUMSEAGREEN,
+    MEDIUMSLATEBLUE,
+    MEDIUMSPRINGGREEN,
+    MEDIUMTURQUOISE,
+    MEDIUMVIOLETRED,
+    MIDNIGHTBLUE,
+    MINTCREAM,
+    MISTYROSE,
+    MOCCASIN,
+    NAVAJOWHITE,
+    NAVY,
+    OLDLACE,
+    OLIVE,
+    OLIVEDRAB,
+    ORANGE,
+    ORANGERED,
+    ORCHID,
+    PALEGOLDENROD,
+    PALEGREEN,
+    PALETURQUOISE,
+    PALEVIOLETRED,
+    PAPAYAWHIP,
+    PEACHPUFF,
+    PERU,
+    PINK,
+    PLAID,
+    PLUM,
+    POWDERBLUE,
+    PURPLE,
+    RED,
+    ROSYBROWN,
+    ROYALBLUE,
+    SADDLEBROWN,
+    SALMON,
+    SANDYBROWN,
+    SEAGREEN,
+    SEASHELL,
+    SIENNA,
+    SILVER,
+    SKYBLUE,
+    SLATEBLUE,
+    SLATEGRAY,
+    SLATEGREY,
+    SNOW,
+    SPRINGGREEN,
+    STEELBLUE,
+    TAN,
+    TEAL,
+    THISTLE,
+    TOMATO,
+    TURQUOISE,
+    VIOLET,
+    WHEAT,
+    WHITE,
+    WHITESMOKE,
+    YELLOW,
+    YELLOWGREen
+};
+color_enum color_sel = DEFAULT_COLOR;
+color_enum curr_color = DEFAULT_COLOR;
+color_enum color_sel_fifo[FIFO_SIZE] = {DEFAULT_COLOR};
+
 // Input Handling
 String str_in = "default";
 String inputString = "";
@@ -93,13 +400,13 @@ String str_in_last = "default";
 
 // String disp_str = "TEAM 8858 BEAST FROM THE EAST - WYLIE EAST HS - WYLIE, TEXAS";
 String disp_str = "Entering text mode...";
-int disp_speed = 7; // seconds
+int disp_speed = 15; // seconds
 
 // Brightness Variables
 uint8_t min_brightness = 0x00;
 uint8_t max_brightness = 0xFF;
 uint8_t bstep = 0x10;
-uint8_t brightness = 0x80;
+uint8_t brightness = 0xA0;
 CRGB system_color = CRGB::Cyan;
 bool stringComplete = false;
 bool text_mode_serial_feedback = false;
@@ -107,6 +414,7 @@ bool text_mode_disp_done = false;
 String disp_str_fifo[FIFO_SIZE];
 int fifo_cnt = 0;
 bool cmd_keyword = false;
+bool color_input_en = false;
 
 void loop() {
 
@@ -120,6 +428,10 @@ void loop() {
         stringComplete = false;
         cmd_keyword = false;
         clearscreen();
+
+        if(str_in == "reset"){
+            NVIC_SystemReset();
+        }
 
         // Randomizes the positions of all beams
         if(str_in == "rand"){
@@ -181,26 +493,57 @@ void loop() {
 
         if(str_in == "red"){
             system_color = CRGB::Red;
+            if(color_input_en){
+                color_sel = RED;
+            }
             cmd_keyword = true;
         }
 
         if(str_in == "blue"){
             system_color = CRGB::Blue;
+            if(color_input_en){
+                color_sel = BLUE;
+            }
             cmd_keyword = true;
         }
 
         if(str_in == "green"){
             system_color = CRGB::Green;
+            if(color_input_en){
+                color_sel = GREEN;
+            }
             cmd_keyword = true;
         }
 
         if(str_in == "cyan"){
             system_color = CRGB::Cyan;
+            if(color_input_en){
+                color_sel = CYAN;
+            }
             cmd_keyword = true;
         }
 
         if(str_in == "purple"){
             system_color = CRGB::Purple;
+            if(color_input_en){
+                color_sel = PURPLE;
+            }
+            cmd_keyword = true;
+        }
+
+        if(str_in == "coral"){
+            system_color = CRGB::Coral;
+            if(color_input_en){
+                color_sel = CORAL;
+            }
+            cmd_keyword = true;
+        }
+
+        if(str_in == "white"){
+            system_color = CRGB::White;
+            if(color_input_en){
+                color_sel = WHITE;
+            }
             cmd_keyword = true;
         }
 
@@ -224,12 +567,29 @@ void loop() {
             cmd_keyword = true;
         }
 
+        if(str_in == "color"){
+            color_input_en = true;
+            cmd_keyword = true;
+        }
+
+        if(str_in == "fifo chk"){
+            Serial.print("FIFO Status: ");
+            Serial.print(fifo_cnt);
+            Serial.print(" / ");
+            Serial.println(FIFO_SIZE);
+            Serial.print("(");
+            Serial.print(FIFO_SIZE - fifo_cnt);
+            Serial.println(" spots remaining)");
+            cmd_keyword = true;
+        }
+
 
         // in text mode, feed through input string to the display function
         if(mode_sel == TEXT){
             if(!cmd_keyword){
                 if(text_mode_disp_done){
                     disp_str = str_in;
+                    curr_color = color_sel;
                     text_mode_disp_done = false;
                     string_to_led_map(disp_str, disp_speed, CRGB::Black, true, true);
                     if(text_mode_serial_feedback){
@@ -240,11 +600,16 @@ void loop() {
                 } else {
                     if(fifo_cnt < FIFO_SIZE){
                         disp_str_fifo[fifo_cnt] = "  " + str_in; // pad FIFO additions with some space to keep them from bunching up on LED display
+                        color_sel_fifo[fifo_cnt] = color_sel;
                         if(text_mode_serial_feedback){
                             Serial.print("INFO : Adding \"");
                             Serial.print(str_in);
-                            Serial.println("\" to FIFO...");
+                            Serial.print("\", color = ");
+                            Serial.print(color_sel);
+                            Serial.println(" to FIFO...");
                         }
+                        color_sel = DEFAULT_COLOR;
+                        color_input_en = false;
                         fifo_cnt++;
                     } else {
                         Serial.println("ERROR : current string has not finished, and FIFO is full!");
@@ -269,7 +634,7 @@ void loop() {
 
         if(mode_sel == TEXT){
             if((disp_str != "") && (!text_mode_disp_done)){
-                if(string_to_led_map(disp_str, disp_speed, system_color, false, false)){
+                if(string_to_led_map(disp_str, disp_speed, color_dec[curr_color], false, false)){
                     // str_in = "disp_done";
                     if(text_mode_serial_feedback){
                         Serial.print("INFO : Done printing message \"");
@@ -279,15 +644,20 @@ void loop() {
 
                     if(fifo_cnt){
                         disp_str = disp_str_fifo[0];
+                        curr_color = color_sel_fifo[0];
                         for(int i = 0; i < fifo_cnt - 1; i++){
                             disp_str_fifo[i] = disp_str_fifo[i + 1];
+                            color_sel_fifo[i] = color_sel_fifo[i + 1];
                         }
+                        color_sel_fifo[FIFO_SIZE - 1] = DEFAULT_COLOR; // ensure the default color gets into the last position in the FIFO
                         fifo_cnt--;
-                        string_to_led_map(disp_str, disp_speed, system_color, true, true);
+                        string_to_led_map(disp_str, disp_speed, color_dec[curr_color], true, true);
                         if(text_mode_serial_feedback){
                             Serial.print("INFO : Pulling \"");
                             Serial.print(disp_str);
-                            Serial.println("\" from FIFO...");
+                            Serial.print("\", color = ");
+                            Serial.print(curr_color);
+                            Serial.println(" from FIFO...");
                         }
                     } else {
                         text_mode_disp_done = true; // indicate script is ready to accept a new string
