@@ -400,7 +400,7 @@ String str_in_last = "default";
 
 // String disp_str = "TEAM 8858 BEAST FROM THE EAST - WYLIE EAST HS - WYLIE, TEXAS";
 String disp_str = "Entering text mode...";
-int disp_speed = 15; // seconds
+int disp_speed = 10; // seconds
 
 // Brightness Variables
 uint8_t min_brightness = 0x00;
@@ -599,7 +599,7 @@ void loop() {
                     }
                 } else {
                     if(fifo_cnt < FIFO_SIZE){
-                        disp_str_fifo[fifo_cnt] = "  " + str_in; // pad FIFO additions with some space to keep them from bunching up on LED display
+                        disp_str_fifo[fifo_cnt] = str_in; // pad FIFO additions with some space to keep them from bunching up on LED display
                         color_sel_fifo[fifo_cnt] = color_sel;
                         if(text_mode_serial_feedback){
                             Serial.print("INFO : Adding \"");

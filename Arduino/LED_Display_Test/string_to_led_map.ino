@@ -759,6 +759,8 @@ bool string_to_led_map(String str_in, int t_seconds, CRGB color, bool fill, bool
             color,
             fill
         );
+        str_idx = 0;
+        char_idx = 0;
     } else {
         if(str_idx <= str_in.length()){ // print characters until you get to the end of the string
             if(shift_char(
@@ -778,11 +780,13 @@ bool string_to_led_map(String str_in, int t_seconds, CRGB color, bool fill, bool
                 fill
             );
             str_idx = 0;
+            char_idx = 0;
         }
     }
 
     if(reset){
         str_idx = 0;
+        char_idx = 0;
     }
     return done;
 }
