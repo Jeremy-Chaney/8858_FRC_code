@@ -51,7 +51,7 @@ public class MoveElevatorToPositionAuto extends Command {
 
     @Override
     public void end(boolean interrupted){
-        // elevatorSubsystem.MoveElevatorToPosition(elevatorSubsystem.getEncoderPosition());
+        elevatorSubsystem.MoveElevatorToPosition(targetPosition);
         SmartDashboard.putString("elevator command", "end");
     }
 }

@@ -288,15 +288,13 @@ public class RobotContainer {
 
             // low algae
             driverXbox.leftTrigger(0.5).onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGLO),
-                    new algaeSmartIntake(algaeSubsystem)
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGLO)
                 )
             );
 
             // high algae
             driverXbox.rightTrigger(0.5).onTrue(new ParallelCommandGroup(
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGHI),
-                    new algaeSmartIntake(algaeSubsystem)
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_ALGHI)
                 )
             );
 
@@ -321,23 +319,6 @@ public class RobotContainer {
             driverXbox.a().onTrue(
                 new algaeSmartIntake(algaeSubsystem)
             );
-
-            // CANdle controls
-            // driverXbox.a().onTrue(
-            //     Commands.runOnce(()->{
-            //         candle.setLEDs(40, 0, 0, 0, 0, 38);
-            //         // candle.animate(twinkle_anim, 0);
-            //     })
-            // );
-            // driverXbox.y().onTrue(
-            //     Commands.runOnce(()->{
-            //         candle.setLEDs(0, 0, 0, 0, 0, 38);
-            //         // candle.clearAnimation(0);
-            //     })
-            // );
-
-
-
 
             /* Climber Up */
             // driverXbox.x().onTrue(new MoveClimberToPosition(climberSubsystem, 0.8, 0.1));
@@ -373,10 +354,14 @@ public class RobotContainer {
                     new AutoCoralIntake(coralSubsystem),
                     new SetLEDStateCommand(LEDSubsystem.Mode.SOLID_GREEN, ledSubsystem),
                     new RumbleCommand(driverXbox, 1.0, 1.0),
-                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -0.5, 0.5, -90),
-                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -0.5, 0.5, -90),
+                    // Red
+                    // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 7, 2, 0.5, -90),
+                    // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 7, 0.5, 0.5, -90),
+                    // Blue
+                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -2.523, 0.92, 90),
+                    // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -0.523, 0.92, 90),
                     new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L4),
-                    new AutoScoreCoral(coralSubsystem),
+                    // new AutoScoreCoral(coralSubsystem),
                     new SetLEDStateCommand(LEDSubsystem.Mode.BLINK_ALLIANCE, ledSubsystem),
                     new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_COR_IN)
                 )
@@ -389,12 +374,13 @@ public class RobotContainer {
                     new SetLEDStateCommand(LEDSubsystem.Mode.SOLID_GREEN, ledSubsystem),
                     new RumbleCommand(driverXbox, 1.0, 1.0),
                     // Red
-                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -2, 0.3, -90),
-                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -0.5, 0.2, -90),
-                    // Blue
+                    // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 7, -2, 0.3, -90),
                     // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 7, -0.5, 0.2, -90),
+                    // Blue
+                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -2.523, 0.52, 90),
+                    // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -0.523, 0.22, 90),
                     new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L4),
-                    new AutoScoreCoral(coralSubsystem),
+                    // new AutoScoreCoral(coralSubsystem),
                     new SetLEDStateCommand(LEDSubsystem.Mode.BLINK_ALLIANCE, ledSubsystem),
                     new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_COR_IN)
                 )
@@ -466,12 +452,21 @@ public class RobotContainer {
     }
 
     public void periodic(){
-        limelightSubsystem.getBotPoseBlue().ifPresent(
-            pose -> {
-                double ts = limelightSubsystem.getVisionTimestampSeconds();
-                drivebase.addVisionReading(pose, ts);
-            }
-        );
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Blue){
+            limelightSubsystem.getBotPoseBlue().ifPresent(
+                pose -> {
+                    double ts = limelightSubsystem.getVisionTimestampSeconds();
+                    drivebase.addVisionReading(pose, ts);
+                }
+            );
+        } else {
+            limelightSubsystem.getBotPoseRed().ifPresent(
+                pose -> {
+                    double ts = limelightSubsystem.getVisionTimestampSeconds();
+                    drivebase.addVisionReading(pose, ts);
+                }
+            );
+        }
         SmartDashboard.putNumber("Position X", drivebase.getPose().getX());
         SmartDashboard.putNumber("Position Y", drivebase.getPose().getY());
         SmartDashboard.putNumber("Rotation", drivebase.getPose().getRotation().getDegrees());

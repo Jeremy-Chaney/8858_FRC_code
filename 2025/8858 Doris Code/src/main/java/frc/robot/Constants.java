@@ -29,11 +29,11 @@ public final class Constants {
 
     // Positions for coral elevator height for levels 1-4
     public static final double ELE_L1 = (0.0);
-    public static final double ELE_L2 = (15.024);
-    public static final double ELE_L3 = (36.142);
-    public static final double ELE_L4 = (69.15);
-    public static final double ELE_ALGLO = (33.0);
-    public static final double ELE_ALGHI = (55.5);
+    public static final double ELE_L2 = (20.205);
+    public static final double ELE_L3 = (48.607);
+    public static final double ELE_L4 = (93.0);
+    public static final double ELE_ALGLO = (44.381);
+    public static final double ELE_ALGHI = (74.64);
     public static final double ELE_TOL = (0.35);
 
     // Positions for coral wrist angle for levels 1-4

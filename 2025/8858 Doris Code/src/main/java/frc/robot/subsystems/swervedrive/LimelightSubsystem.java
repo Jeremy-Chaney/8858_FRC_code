@@ -3,7 +3,6 @@ package frc.robot.subsystems.swervedrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.util.Optional;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -43,6 +42,20 @@ public class LimelightSubsystem extends SubsystemBase {
     // Target area
     public double getArea() {
         return limelightTable.getEntry("ta").getDouble(0.0);
+    }
+
+    public Optional<Pose2d> getBotPoseRed(){
+        double[] pose = limelightTable.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+
+        if(pose.length < 6 || ((pose[0] == 0.0) && (pose[1] == 0.0) && (pose[5] == 0.0))){
+            return Optional.empty();
+        }
+
+        return Optional.of(new Pose2d(
+            pose[0],
+            pose[1],
+            Rotation2d.fromDegrees(pose[5])
+        ));
     }
 
     public Optional<Pose2d> getBotPoseBlue(){

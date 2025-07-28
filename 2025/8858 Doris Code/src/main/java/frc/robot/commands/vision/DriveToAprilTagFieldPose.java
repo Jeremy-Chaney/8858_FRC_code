@@ -24,7 +24,7 @@ public class DriveToAprilTagFieldPose extends Command {
     private final double kRotationGain = 1.0;
 
     private final double maxRotationSpeed = 1.0;
-    private final double maxMovementSpeed = 2.0;
+    private final double maxMovementSpeed = 1.0;
 
     private final double kPoseTolerance = 0.07;
     private final double kAngleTolerance = 1.0;
@@ -59,8 +59,8 @@ public class DriveToAprilTagFieldPose extends Command {
         double dy = targetPose.getY() - currentPose.getY();
         Rotation2d dTheta = targetPose.getRotation().minus(currentPose.getRotation());
 
-        double forward = MathUtil.clamp(dx * kTranslationGain, -maxMovementSpeed, maxMovementSpeed);
-        double strafe = MathUtil.clamp(dy * kTranslationGain, -maxMovementSpeed, maxMovementSpeed);
+        double forward = -1 * MathUtil.clamp(dx * kTranslationGain, -maxMovementSpeed, maxMovementSpeed);
+        double strafe = -1 * MathUtil.clamp(dy * kTranslationGain, -maxMovementSpeed, maxMovementSpeed);
         double turn = MathUtil.clamp(dTheta.getDegrees() * kRotationGain, -maxRotationSpeed, maxRotationSpeed);
 
         swerve.drive(new Translation2d(forward, strafe), turn, true);

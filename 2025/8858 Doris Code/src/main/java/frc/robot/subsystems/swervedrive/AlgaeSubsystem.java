@@ -28,7 +28,7 @@ public class AlgaeSubsystem extends SubsystemBase {
         leftAlgaeIntakeMotor = new SparkMax(OperatorConstants.CAN_ALGAE_L, MotorType.kBrushless);
         rightAlgaeIntakeMotor = new SparkMax(OperatorConstants.CAN_ALGAE_R, MotorType.kBrushless);
         algae_intake_instance = this; // save subsystem so it can be accessed anywhere
-        speedLimiter = new SlewRateLimiter(1.0);
+        speedLimiter = new SlewRateLimiter(0.4);
         
         setDefaultCommand(new Command() { // run this command when the subsystem isn't being used by another command
             {
@@ -55,6 +55,6 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public double getAlgaeCurrent(){
         // return m_pdp.getCurrent(Constants.OperatorConstants.PDP_ALGAE);
-        return leftAlgaeIntakeMotor.getOutputCurrent();
+        return rightAlgaeIntakeMotor.getOutputCurrent();
     }
 }

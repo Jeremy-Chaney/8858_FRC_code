@@ -9,6 +9,8 @@ import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -16,23 +18,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-    // public static SparkMax leftElevatorMotor = new SparkMax(16, MotorType.kBrushless);
-    // public static SparkMax rightElevatorMotor = new SparkMax(15, MotorType.kBrushless);
-    // public static RelativeEncoder leftElevatorEncoder = leftElevatorMotor.getEncoder();
-    // public static RelativeEncoder rightElevatorEncoder = rightElevatorMotor.getEncoder();
-
     // private final SparkMax leftElevatorMotor;
      private final SparkMax rightElevatorMotor;
     // private final SparkFlex elevatorMotor;
     // private final RelativeEncoder leftElevatorEncoder;
-    private final RelativeEncoder rightElevatorEncoder;
+    private final Encoder elevatorEncoder;
     // private final RelativeEncoder elevatorEncoder;
     private final PIDController pidController;
+    private final SlewRateLimiter elevatorSlewRateLimiter;
 
     // PID Coefficients
     private final double kP = 0.1;
     private final double kI = 0.001;
-    private final double kD = 0.00001;
+    private final double kD = 0.0001;
     private final double kFF = 0.0;
     private final double kMaxOutput = 0.6;
     private final double kMinOutput = -0.45;
@@ -50,11 +48,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         rightElevatorMotor = new SparkMax(OperatorConstants.CAN_ELEVATOR_R, MotorType.kBrushless);
         // elevatorMotor = new SparkFlex(9, MotorType.kBrushless);
         // initialize encoders
-        // leftElevatorEncoder = leftElevatorMotor.getEncoder();
-        rightElevatorEncoder = rightElevatorMotor.getEncoder();
-        // elevatorEncoder = rightElevatorEncoder.getEncoder();
+        elevatorEncoder = new Encoder(3, 4);
+        elevatorEncoder.setDistancePerPulse(0.01);
         // initialize PID controller
         pidController = new PIDController(kP, kI, kD);
+        elevatorSlewRateLimiter = new SlewRateLimiter(4.0);
         elevatorinstance = this; // save subsystem so it can be accessed anywhere
         // verify this works before uncommenting
         setDefaultCommand(new Command() { // run this command when the subsystem isn't being used by another command
@@ -75,15 +73,15 @@ public class ElevatorSubsystem extends SubsystemBase {
     /** Move the elevator to a certain position */
     public void MoveElevatorToPosition(double targetPosition){ // move the elevator to a certain position
         this.lastTargetPosition = targetPosition; // save the target position
-        // double currentPosition = leftElevatorEncoder.getPosition();
-        double currentPosition = -rightElevatorEncoder.getPosition();
+        // double currentPosition = -rightElevatorEncoder.getPosition();
+        double currentPosition = elevatorEncoder.getDistance();
         double output = pidController.calculate(currentPosition, targetPosition) + kFF;
-        // output = (currentPosition < targetPosition ? 0.2 : -0.2);
-        // if (Math.abs(currentPosition-targetPosition) < 1.0) {
-        //     output = 0;
-        // }
 
         output = Math.max(kMinOutput, Math.min(kMaxOutput, output));
+
+        if(Math.abs(output) > 0.2){
+            output = elevatorSlewRateLimiter.calculate(output);
+        }
 
         if(output < 0 && currentPosition < 7){
             output = output / 2.0;
@@ -91,12 +89,12 @@ public class ElevatorSubsystem extends SubsystemBase {
         if(output > 0 && currentPosition > 63){
             output = output / 1.0;
         }
-        // leftElevatorMotor.set(output);
+
         rightElevatorMotor.set(-output);
-        // elevatorMotor.set(-output);
         SmartDashboard.putNumber("Elevator Power", output);
         SmartDashboard.putNumber("Elevator Current (A)", rightElevatorMotor.getOutputCurrent());
         SmartDashboard.putNumber("Elevator Velocity", -rightElevatorMotor.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Elevator Quadrature Encoder", elevatorEncoder.getDistance());
         SmartDashboard.putNumber("Elevator Target Position", lastTargetPosition);
         SmartDashboard.putNumber("Elevator Target Delta", getEncoderPosition() - lastTargetPosition);
         SmartDashboard.putBoolean("Elevator Is At Position", isAtTarget());
@@ -113,15 +111,13 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
     /** Move the elevator at a certain speed */
     public void MoveElevator(double speed){
-        // leftElevatorMotor.set(speed); // run motors in opposite directions to move elevator up and down
         rightElevatorMotor.set(-speed);
-        // elevatorMotor.set(-speed);
         this.lastTargetPosition = this.getEncoderPosition(); // update the last target position so that the elevator doesn't go back to the last set position after the command ends
     }
     /** Get the height of the elevator */
     public double getEncoderPosition(){
-        // return leftElevatorEncoder.getPosition();
-        return -rightElevatorEncoder.getPosition();
+        // return -rightElevatorEncoder.getPosition();
+        return elevatorEncoder.getDistance();
     }
     /** Reset the PID controller */
     public void resetPID(){
@@ -135,5 +131,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     /** */
     public void resetEncoder(){
         rightElevatorMotor.getEncoder().setPosition(0.0);
+        elevatorEncoder.reset();
     }
 }

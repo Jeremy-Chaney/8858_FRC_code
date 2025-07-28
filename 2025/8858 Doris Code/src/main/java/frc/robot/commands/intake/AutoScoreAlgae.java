@@ -10,10 +10,10 @@ public class AutoScoreAlgae extends Command {
     private final AlgaeSubsystem algaeSubsystem;
 
     // Used to determine how long to 'blind run' coral motor after limit switches can't see the coral anymore
-    Timer algaeIntakeTimer = new Timer();
+    Timer algaeOuttakeTimer = new Timer();
     boolean algaeTimerActive = false;
-    double algaeIntakeEndTime;
-    double algaeBlindRunTime = 0.5;
+    double algaeOuttakeEndTime;
+    double algaeBlindRunTime = 1.0;
 
     public AutoScoreAlgae(AlgaeSubsystem algaeSubsystem) {
         this.algaeSubsystem = algaeSubsystem;
@@ -25,15 +25,15 @@ public class AutoScoreAlgae extends Command {
         algaeSubsystem.algaeIntake(Constants.ALG_M_SPEED);
         if(!algaeTimerActive){
             algaeTimerActive = true;
-            algaeIntakeEndTime = algaeIntakeTimer.get() + algaeBlindRunTime;
+            algaeOuttakeEndTime = algaeOuttakeTimer.get() + algaeBlindRunTime;
         }
     }
 
     @Override
     public boolean isFinished() { // check if the command should stop running
         // return (!(algaeIntakeSubsystem.getTop() || algaeIntakeSubsystem.getBot()));
-        SmartDashboard.putNumber("Algae Blind Run Timer", algaeIntakeTimer.get() - algaeIntakeEndTime);
-        return (algaeTimerActive && (algaeIntakeTimer.get() > algaeIntakeEndTime));
+        SmartDashboard.putNumber("Algae Blind Run Timer", algaeOuttakeTimer.get() - algaeOuttakeEndTime);
+        return (algaeTimerActive && (algaeOuttakeTimer.get() > algaeOuttakeEndTime));
     }
 
     @Override
@@ -43,10 +43,10 @@ public class AutoScoreAlgae extends Command {
 
     @Override
     public void initialize(){
-        algaeIntakeTimer.start();
+        algaeOuttakeTimer.start();
         algaeTimerActive = false;
 
         // shouldn't need this as it will be overwritten but good to have ~some~ value
-        algaeIntakeEndTime = algaeIntakeTimer.get() + algaeBlindRunTime;
+        algaeOuttakeEndTime = algaeOuttakeTimer.get() + algaeBlindRunTime;
     }
 }
