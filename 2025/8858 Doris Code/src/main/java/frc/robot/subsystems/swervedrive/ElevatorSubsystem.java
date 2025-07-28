@@ -8,7 +8,6 @@ import com.revrobotics.spark.SparkMax;
 import frc.robot.Constants;
 import frc.robot.Constants.OperatorConstants;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -78,7 +77,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         this.lastTargetPosition = targetPosition; // save the target position
         // double currentPosition = leftElevatorEncoder.getPosition();
         double currentPosition = -rightElevatorEncoder.getPosition();
-        double output = pidController.calculate(currentPosition, targetPosition);
+        double output = pidController.calculate(currentPosition, targetPosition) + kFF;
         // output = (currentPosition < targetPosition ? 0.2 : -0.2);
         // if (Math.abs(currentPosition-targetPosition) < 1.0) {
         //     output = 0;
@@ -95,8 +94,11 @@ public class ElevatorSubsystem extends SubsystemBase {
         // leftElevatorMotor.set(output);
         rightElevatorMotor.set(-output);
         // elevatorMotor.set(-output);
-        SmartDashboard.putNumber("Elevator Power", -output);
+        SmartDashboard.putNumber("Elevator Power", output);
+        SmartDashboard.putNumber("Elevator Current (A)", rightElevatorMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Velocity", -rightElevatorMotor.getEncoder().getVelocity());
         SmartDashboard.putNumber("Elevator Target Position", lastTargetPosition);
+        SmartDashboard.putNumber("Elevator Target Delta", getEncoderPosition() - lastTargetPosition);
         SmartDashboard.putBoolean("Elevator Is At Position", isAtTarget());
     }
 
@@ -124,5 +126,14 @@ public class ElevatorSubsystem extends SubsystemBase {
     /** Reset the PID controller */
     public void resetPID(){
         pidController.reset();
+    }
+
+    public double getElevatorVelocity(){
+        return rightElevatorMotor.getEncoder().getVelocity();
+    }
+
+    /** */
+    public void resetEncoder(){
+        rightElevatorMotor.getEncoder().setPosition(0.0);
     }
 }

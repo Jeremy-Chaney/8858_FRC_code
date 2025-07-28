@@ -74,6 +74,7 @@ public class Robot extends TimedRobot {
         // and put our
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
+        m_robotContainer.init();
 
         DataLogManager.start();
         log = DataLogManager.getLog();
@@ -138,6 +139,8 @@ public class Robot extends TimedRobot {
         odometryYLog.append(m_robotContainer.drivebase.getPose().getY());
         headingLog.append(m_robotContainer.drivebase.getHeading().getDegrees());
 
+        m_robotContainer.periodic();
+
     }
 
     /**
@@ -149,7 +152,7 @@ public class Robot extends TimedRobot {
         m_robotContainer.setMotorBrake(true);
         disabledTimer.reset();
         disabledTimer.start();
-        LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.SOLID_RED);
+        LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.BEAM_ALLIANCE);
         LEDSubsystem.getInstance().holdState();
     }
 

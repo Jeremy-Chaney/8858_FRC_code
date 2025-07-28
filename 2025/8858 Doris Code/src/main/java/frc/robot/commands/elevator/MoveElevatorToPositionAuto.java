@@ -19,6 +19,7 @@ public class MoveElevatorToPositionAuto extends Command {
     @Override
     public void initialize(){
         elevatorSubsystem.resetPID(); // reset PID controller
+        SmartDashboard.putString("elevator command", "init");
     }
 
     @Override
@@ -29,19 +30,23 @@ public class MoveElevatorToPositionAuto extends Command {
 
     @Override
     public boolean isFinished(){
-       if(DriverStation.isAutonomous()){
-        if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL * 1.5){
-            return true;
-        }else{
-            return false;
+        if(Math.abs(elevatorSubsystem.getElevatorVelocity()) < 20){
+            return (Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= 10.0);
+        } else {
+            if(DriverStation.isAutonomous()){
+                if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL * 1.5){
+                    return true;
+                }else{
+                    return false;
+                }
+                } else{
+                if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
         }
-       } else{
-        if ( Math.abs(targetPosition - elevatorSubsystem.getEncoderPosition()) <= Constants.ELE_TOL){
-            return true;
-        }else{
-            return false;
-        }
-       }
     }
 
     @Override

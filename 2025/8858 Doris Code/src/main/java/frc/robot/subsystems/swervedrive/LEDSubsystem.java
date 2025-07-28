@@ -2,8 +2,12 @@ package frc.robot.subsystems.swervedrive;
 
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.TwinkleAnimation;
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import com.ctre.phoenix.led.TwinkleAnimation.TwinklePercent;
+import com.ctre.phoenix.led.LarsonAnimation;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
@@ -20,17 +24,28 @@ public class LEDSubsystem extends SubsystemBase {
     private static final TwinkleAnimation blue_twinkle_anim = new TwinkleAnimation(0, 255, 0, 0, 0.2, LED_COUNT,
             TwinklePercent.Percent18);
 
+    private static final LarsonAnimation blueBeam = new LarsonAnimation(0, 255, 0, 0, 0.5, LED_COUNT, BounceMode.Center, 5);
+    private static final LarsonAnimation redBeam = new LarsonAnimation(255, 0, 0, 0, 0.5, LED_COUNT, BounceMode.Center, 5);
+    private static final LarsonAnimation purpleBeam = new LarsonAnimation(255, 0, 255, 0, 0.5, LED_COUNT, BounceMode.Center, 5);
+
     public static enum Mode {
         OFF,
+        SOLID_ALLIANCE,
         SOLID_RED,
-        SOLID_GREEN,
         SOLID_BLUE,
+        SOLID_GREEN,
+        SOLID_PURPLE,
         RED_GODZILLA,
         BLUE_GODZILLA,
+        BLINK_ALLIANCE,
         BLINK_RED,
         BLINK_BLUE,
         BLINK_GREEN,
+        BLINK_PURPLE,
         TWINKLE_BLUE,
+        BEAM_ALLIANCE,
+        BEAM_BLUE,
+        BEAM_RED
     }
 
     private LEDSubsystem() {
@@ -64,14 +79,26 @@ public class LEDSubsystem extends SubsystemBase {
             case OFF:
                 setColor(0, 0, 0);
                 break;
+            case SOLID_ALLIANCE:
+                if(DriverStation.getAlliance().get() == Alliance.Red){
+                    setColor(255, 0, 0);
+                } else if (DriverStation.getAlliance().get() == Alliance.Blue){
+                    setColor(0, 255, 0);
+                } else {
+                    setColor(255, 2555, 255);
+                }
+                break;
             case SOLID_RED:
                 setColor(255, 0, 0);
+                break;
+            case SOLID_BLUE:
+                setColor(0, 0, 255);
                 break;
             case SOLID_GREEN:
                 setColor(0, 255, 0);
                 break;
-            case SOLID_BLUE:
-                setColor(0, 0, 255);
+            case SOLID_PURPLE:
+                setColor(255, 0, 255);
                 break;
             case RED_GODZILLA:
                 runGodzilla(time, 255, 0, 0);
@@ -79,17 +106,44 @@ public class LEDSubsystem extends SubsystemBase {
             case BLUE_GODZILLA:
                 runGodzilla(time, 0, 0, 255);
                 break;
+            case BLINK_ALLIANCE:
+                if(DriverStation.getAlliance().get() == Alliance.Red){
+                    blink(1, time, 255, 0, 0);
+                } else if (DriverStation.getAlliance().get() == Alliance.Blue){
+                    blink(1, time, 0, 255, 0);
+                } else {
+                    blink(1, time, 255, 255, 255);
+                }
+                break;
             case BLINK_RED:
                 blink(1, time, 255, 0, 0);
-                break;
-            case BLINK_GREEN:
-                blink(1, time, 0, 255, 0);
                 break;
             case BLINK_BLUE:
                 blink(1, time, 0, 0, 255);
                 break;
+            case BLINK_GREEN:
+                blink(1, time, 0, 255, 0);
+                break;
+            case BLINK_PURPLE:
+                blink(1, time, 255, 0, 255);
+                break;
             case TWINKLE_BLUE:
                 candle.animate(blue_twinkle_anim);
+                break;
+            case BEAM_ALLIANCE:
+                if(DriverStation.getAlliance().get() == Alliance.Red){
+                    candle.animate(redBeam);
+                } else if (DriverStation.getAlliance().get() == Alliance.Blue){
+                    candle.animate(blueBeam);
+                } else {
+                    candle.animate(purpleBeam);
+                }
+                break;
+            case BEAM_BLUE:
+                candle.animate(blueBeam);
+                break;
+            case BEAM_RED:
+                candle.animate(redBeam);
                 break;
         }
     }

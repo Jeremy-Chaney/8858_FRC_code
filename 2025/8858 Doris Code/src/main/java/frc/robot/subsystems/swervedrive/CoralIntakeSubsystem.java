@@ -37,19 +37,7 @@ public class CoralIntakeSubsystem extends SubsystemBase {
     }
 
     public void AutoScoreCoral(){
-        if (getTop()){
-            if(getBot()){
-                coralIntakeMotor.set(Constants.COR_M_SPEED);
-            } else {
-                coralIntakeMotor.set(Constants.COR_M_SPEED);
-            }
-        } else {
-            if(getBot()){
-                coralIntakeMotor.set(Constants.COR_M_SPEED);
-            } else {
-                coralIntakeMotor.set(0);
-            }
-        }
+        coralIntakeMotor.set(Constants.COR_M_SPEED);
     }
 
     public void AutoCoralIntake(){
