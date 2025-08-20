@@ -12,16 +12,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.util.MovingAverage;
+import swervelib.SwerveInputStream;
 
 public class DriveToAprilTagFieldPosePID extends Command {
     private final SwerveSubsystem swerve;
     private final Pose2d targetPose;
 
-    MovingAverage currentX_Average = new MovingAverage(20);
-    MovingAverage currentY_Average = new MovingAverage(20);
-    MovingAverage forwardAvg = new MovingAverage(20);
-    MovingAverage strafeAvg = new MovingAverage(20);
+    private final SwerveInputStream stream;
     private final PIDController forward_drive_pidController;
     private final PIDController strafe_drive_pidController;
     private final PIDController angle_pidController;
@@ -63,6 +60,12 @@ public class DriveToAprilTagFieldPosePID extends Command {
             throw new IllegalArgumentException("AprilTag ID " + tagID + " not found in field layout.");
         }
 
+        stream = SwerveInputStream.of(
+            swerve.getSwerveDrive(),
+            () -> x,
+            () -> y
+        );
+
         addRequirements(swerve);
     }
 
@@ -77,37 +80,26 @@ public class DriveToAprilTagFieldPosePID extends Command {
     public void execute() {
         Pose2d currentPose = swerve.getPose();
 
+        // Find the distance and angle errors between current position and the target position
         double distanceError = targetPose.getTranslation().getDistance(currentPose.getTranslation());
-        double speed = MathUtil.clamp(drive_kp, 0, maxMovementSpeed);
+        double turnError = targetPose.getTranslation().getAngle().minus(currentPose.getTranslation().getAngle()).getDegrees();
+        double X_Error = targetPose.getX() - currentPose.getX();
+        double Y_Error = targetPose.getY() - currentPose.getY();
 
-        // double dx = targetPose.getX() - currentPose.getX();
-        // double dy = targetPose.getY() - currentPose.getY();
-        Rotation2d dTheta = targetPose.getRotation().minus(currentPose.getRotation());
+        // Feed the errors into PID controllers with instructions to get the errors down to zero
+        double forward = forward_drive_pidController.calculate(X_Error, 0) * kTranslationGain;
+        double strafe = strafe_drive_pidController.calculate(Y_Error, 0) * kTranslationGain;
+        double turn = angle_pidController.calculate(turnError, 0) * kRotationGain;
 
-        currentX_Average.add(currentPose.getX());
-        currentY_Average.add(currentPose.getY());
+        // Normalize the translational factors to the total distance
+        forward = Math.cos(Math.atan(strafe / forward)) * distanceError;
+        strafe = Math.sin(Math.atan(strafe / forward)) * distanceError;
 
-        double smoothedX = currentX_Average.getAverage();
-        double smoothedY = currentY_Average.getAverage();
-
-        double forward = forward_drive_pidController.calculate(targetPose.getX(), smoothedX);
-        double strafe = strafe_drive_pidController.calculate(targetPose.getY(), smoothedY);
-        // double turn = angle_pidController.calculate(targetPose.getRotation().getDegrees(), currentPose.getRotation().getDegrees());
-
-        forward = MathUtil.clamp(forward, -maxMovementSpeed, maxMovementSpeed);
-        strafe = MathUtil.clamp(strafe, -maxMovementSpeed, maxMovementSpeed);
-        double turn = MathUtil.clamp(dTheta.getDegrees(), -maxRotationSpeed, maxRotationSpeed);
-
-        forwardAvg.add(forward);
-        strafeAvg.add(strafe);
-
-        forward = forwardAvg.getAverage();
-        strafe = strafeAvg.getAverage();
-
+        // Feed the outputs into the swerve drive system
         swerve.drive(new Translation2d(forward, strafe), turn, true);
 
-        SmartDashboard.putNumber("LL Current X", smoothedX);
-        SmartDashboard.putNumber("LL Current Y", smoothedY);
+        SmartDashboard.putNumber("LL Current X", currentPose.getX());
+        SmartDashboard.putNumber("LL Current Y", currentPose.getY());
         SmartDashboard.putNumber("LL Current Degrees", currentPose.getRotation().getDegrees());
 
         SmartDashboard.putNumber("LL Target X", targetPose.getX());

@@ -56,6 +56,16 @@ public final class Constants {
     // Climber speed stuff
     public static final double CL_M_SPEED = (0.1);
 
+    // PID coefficients for driving (taken from pidfproperties.json)
+    public static final double DRIVE_KP = 0.00023;
+    public static final double DRIVE_KI = 0.0000015;
+    public static final double DRIVE_KD = 1;
+
+    // PID coefficients for turning (taken from pidfproperties.json)
+    public static double ANGLE_KP = 0.01;
+    public static double ANGLE_KI = 0.000038975;
+    public static double ANGLE_KD = 1;
+
     // Maximum speed of the robot in meters per second, used to limit acceleration.
 
     // public static final class AutonConstants
