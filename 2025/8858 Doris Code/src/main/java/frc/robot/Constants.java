@@ -27,6 +27,12 @@ public final class Constants {
     public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
+    // Path Constraints
+    public static final double MAX_DRIVE_VELO = 3.0;
+    public static final double MAX_DRIVE_ACCEL = 3.0;
+    public static final double MAX_ANGLE_VELO = Units.degreesToRadians(90);
+    public static final double MAX_ANGLE_ACCEL = Units.degreesToRadians(360);
+
     // Positions for coral elevator height for levels 1-4
     public static final double ELE_L1 = (0.0);
     public static final double ELE_L2 = (20.205);
