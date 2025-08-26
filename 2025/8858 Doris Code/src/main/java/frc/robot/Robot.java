@@ -185,8 +185,7 @@ public class Robot extends TimedRobot {
     public void autonomousPeriodic() {
     }
 
-    private Timer godzillaTimer = new Timer();
-    private boolean godzillaEnabled = false;
+    private Timer gameTimer = new Timer();
     @Override
     public void teleopInit() {
         // This makes sure that the autonomous stops running when
@@ -199,8 +198,8 @@ public class Robot extends TimedRobot {
             CommandScheduler.getInstance().cancelAll();
         }
         LEDSubsystem.getInstance().setMode(LEDSubsystem.default_state);
-        godzillaTimer.reset();
-        godzillaTimer.start();
+        gameTimer.reset();
+        gameTimer.start();
     }
 
     /**
@@ -208,14 +207,10 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        if (!godzillaEnabled && godzillaTimer.get() > (2 * 60 + 15) - 20) {
-            if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red){
-                LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.RED_GODZILLA);
-            }
-            else if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Blue){
-                LEDSubsystem.getInstance().manualOverride(LEDSubsystem.Mode.BLUE_GODZILLA);
-            }
-            godzillaEnabled = true;
+
+        // start a 20 second timer at the end of teleop
+        if(gameTimer.get() > 115){
+            LEDSubsystem.getInstance().startTimer(20);
         }
     }
 
