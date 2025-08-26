@@ -28,8 +28,8 @@ public final class Constants {
     public static final double MAX_SPEED = Units.feetToMeters(14.5);
 
     // Path Constraints
-    public static final double MAX_DRIVE_VELO = 3.0;
-    public static final double MAX_DRIVE_ACCEL = 3.0;
+    public static final double MAX_DRIVE_VELO = 1.0;
+    public static final double MAX_DRIVE_ACCEL = 1.0;
     public static final double MAX_ANGLE_VELO = Units.degreesToRadians(90);
     public static final double MAX_ANGLE_ACCEL = Units.degreesToRadians(360);
 

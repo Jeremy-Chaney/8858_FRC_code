@@ -43,7 +43,9 @@ import frc.robot.commands.intake.algaeSmartIntake;
 import frc.robot.commands.intake.coralIntake;
 import frc.robot.commands.intake.preScoreAutoCoralIntake;
 import frc.robot.commands.leds.SetLEDStateCommand;
+import frc.robot.commands.vision.AutoAlign;
 import frc.robot.commands.vision.DriveToAprilTagFieldPose;
+import frc.robot.commands.vision.DriveToPositionPathPlanner;
 import frc.robot.subsystems.swervedrive.AlgaeSubsystem;
 import frc.robot.subsystems.swervedrive.CameraSubsystem;
 import frc.robot.subsystems.swervedrive.ClimberSubsystem;
@@ -70,6 +72,8 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     public final SwerveSubsystem drivebase = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
             "swerve/neo"));
+
+    public final AutoAlign autoAlign = new AutoAlign(drivebase);
 
     TwinkleAnimation twinkle_anim = new TwinkleAnimation(0, 255, 0, 0, 0.2, 38, TwinklePercent.Percent18);
 
@@ -375,9 +379,16 @@ public class RobotContainer {
                     // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 7, -2, 0.3, -90),
                     // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 7, -0.5, 0.2, -90),
                     // Blue
-                    new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -2.523, 0.52, 90),
+                    // new DriveToPositionPathPlanner(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -2.523, 0.52, 90),
+                    autoAlign.driveToPosition(
+                        new Pose2d(
+                            1.16,
+                            4.4,
+                            Rotation2d.fromDegrees(90)
+                        )
+                    ),
                     // new DriveToAprilTagFieldPose(drivebase, AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField), 18, -0.523, 0.22, 90),
-                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_L4),
+                    new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_COR_IN),
                     // new AutoScoreCoral(coralSubsystem),
                     new SetLEDStateCommand(LEDSubsystem.Mode.BLINK_ALLIANCE, ledSubsystem),
                     new MoveElevatorToPositionAuto(elevatorSubsystem, Constants.ELE_COR_IN)
